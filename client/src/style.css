@@ -1,0 +1,143 @@
+*{
+  box-sizing: border-box;
+}
+:root{
+  --color-main:#2b47a4;
+  --color-secondary:white;
+  --color-table-primary:#8ea6f3;
+  --color-table-secondary:white;
+  --ff-heading: 'Oswald', sans-serif;
+  --ff-main: 'Roboto', sans-serif;
+}
+/* GLOBAL */
+body{
+  background-color: #e5f8ff;
+  font-family: var(--ff-main);
+}
+.container{
+  margin: 0 auto;
+  max-width: 1000px;
+  width: 90%;
+}
+h1, h2, h3{
+  text-align: center;
+  font-family: var(--ff-heading);
+}
+nav{
+  text-align: center;
+}
+table{
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+th{
+  background-color: var(--color-main);
+  color: var(--color-secondary);
+  text-align: center;
+  padding: 2px 5px;
+}
+tr:nth-child(even){
+  background-color: var(--color-table-primary);
+}
+tr:nth-child(odd){
+  background-color: var(--color-table-secondary);
+}
+td{
+  padding: 5px;
+}
+.button{
+  display: inline-block;
+  text-align: center;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: var(--color-main);
+  color: var(--color-secondary);
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  font-family: var(--ff-main);
+
+}
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+input{
+  margin-inline: 5px;
+  max-width: 100px;
+  font-family: var(--ff-main);
+}
+.settings{
+  text-align: center;
+}
+.popUp{
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Loading */
+.loading-container{
+  height: 50px;
+  max-width: 200px;
+  border: 1px solid var(--color-main);
+  margin: 0 auto;
+}
+.loading-bar{
+  background-color: var(--color-main);
+  height: 50px;  
+}
+/* HP */
+.hp-button{
+  display: block;
+  border-radius: 15px;
+  margin: 0 auto 20px auto;
+  max-width: 600px;
+  height: 100px;
+  line-height: 100px;
+  font-size: 32px;
+  box-shadow: 1px 3px rgb(104, 104, 104);
+  padding: 0;
+}
+.hp-button:active{
+  box-shadow: 1px 1px rgb(104, 104, 104);
+  transform: translateY(2px);
+}
+.hp-img{
+  width: 30px;
+  margin-left: 5px;
+  vertical-align:sub;
+}
+/* FREEMARKET */
+.player:nth-child(even){
+  background-color: var(--color-table-primary);
+}
+.player:nth-child(odd){
+  background-color: var(--color-table-secondary);
+}
+
+.attribute{
+  margin-right: 5px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.attribute-name{
+  font-weight: bold;
+}
+
+/* FRIENDLY MATCH */
+.green{
+  background-color: green;
+}
+
+/* MEDIA QUERY */
+@media (min-width:700px){
+
+  .attribute:first-child{
+    min-width: 150px;
+    }
+}
