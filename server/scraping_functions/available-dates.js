@@ -1,10 +1,22 @@
 const puppeteer = require('puppeteer');
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`;
 const getPPMDate = require('../helper_functions/getPPMDate');
+require('dotenv').config();
+
 
 const scrapeAvailableDates = async (startDate)=>{
     // INITIALIZATION  
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: [
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
+            "--single-process",
+            "--no-zygote",
+        ],
+        executablePath: process.env.NODE_ENV === 'production' ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
+        
+    });
     const page = await browser.newPage();
     await page.goto(URLcalendar, { waitUntil: 'networkidle0' });
     let finalData = [];
