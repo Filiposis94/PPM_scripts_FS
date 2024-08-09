@@ -14,7 +14,7 @@ const scrapeTeams = async()=>{
     let finalData =[];
     // UPDATING TEAMS IN EACH LEAGUE
     for(let i=0; i<leagues.length; i++){
-        console.log(`Updating ${leagues[i]}`);
+        // console.log(`Updating ${leagues[i]}`);
         await page.goto(`${URL}?data=${leagues[i]}`, { waitUntil: 'load' })
         let leagueData = await page.evaluate(()=>{
             let teams = document.getElementsByClassName('link_name');
