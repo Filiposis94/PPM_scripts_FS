@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`;
 const getPPMDate = require('../helper_functions/getPPMDate');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 const scrapeAvailableDates = async (startDate)=>{
@@ -14,7 +14,7 @@ const scrapeAvailableDates = async (startDate)=>{
             "--single-process",
             "--no-zygote",
         ],
-        executablePath: process.env.NODE_ENV === 'production' ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
+        executablePath: process.env.NODE_ENV === 'production' ? '/usr/bin/chromium-browser': puppeteer.executablePath(),
         
     });
     const page = await browser.newPage();
