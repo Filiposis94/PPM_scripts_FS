@@ -8,4 +8,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-CMD [ "node", "server/app.js" ]
+
+RUN npm run build
+
+# Move the React build files to a location that can be served by the backend
+RUN mv client/build /usr/src/app/build
+
+# Expose the port that your app will run on
+EXPOSE 3000
+
+CMD [ "npm", "start" ]
