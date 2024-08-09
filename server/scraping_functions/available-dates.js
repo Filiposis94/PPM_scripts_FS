@@ -2,9 +2,25 @@ const puppeteer = require('puppeteer');
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`;
 const getPPMDate = require('../helper_functions/getPPMDate');
 // require('dotenv').config();
-
+const fs = require('fs');
 
 const scrapeAvailableDates = async (startDate)=>{
+
+    const paths = [
+        '/usr/bin/chromium-browser',
+        '/usr/bin/google-chrome-stable',
+        '/usr/local/bin/chromium-browser',
+        '/usr/local/bin/google-chrome-stable'
+    ];
+    
+    paths.forEach(path => {
+        if (fs.existsSync(path)) {
+            console.log(`Chromium found at: ${path}`);
+        } else {
+            console.log(`Chromium not found at: ${path}`);
+        }
+    });
+
     // INITIALIZATION  
     const browser = await puppeteer.launch({
         headless: true,
