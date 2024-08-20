@@ -45,6 +45,7 @@ function Tactics(props){
         } catch (error) {
             console.log(error);
             handlePopUp(error.response.data.msg);
+            setIsLoading(false);
         };
     };
     console.log(tacticsResults);

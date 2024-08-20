@@ -61,8 +61,8 @@ function FriendlyMatch(props){
             };            
         } catch (error) {
             console.log(error);
-            setIsLoading(false);
             handlePopUp(error.response.data.msg);            
+            setIsLoading(false);
         };
     };
     function handleSettings(event){
@@ -88,6 +88,7 @@ function FriendlyMatch(props){
             } catch (error) {
                 console.log(error);
                 handlePopUp(error.response.data.msg);
+                setIsLoadingDates(false);
             }
         };
         fetchData();

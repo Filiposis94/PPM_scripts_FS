@@ -50,6 +50,7 @@ function Visits(props){
         } catch (error) {
             console.log(error);
             handlePopUp(error.response.data.msg);
+            setIsLoading(false);           
         };
     };
     // ELEMENTS
