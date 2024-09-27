@@ -9,6 +9,14 @@ function Player(props){
                 <p><a href={player.link} target="blank">{player.name}</a></p>
             </div>
             <div className="attribute">
+                <p className="attribute-name">Age</p>
+                <p>{player.age}</p>
+            </div>
+            <div className="attribute">
+                <p className="attribute-name">SV</p>
+                <p>{player.sv}</p>
+            </div>
+            <div className="attribute">
                 <p className="attribute-name">Bra</p>
                 <p>{player.bra}</p>
             </div>

@@ -116,6 +116,7 @@ function FriendlyMatch(props){
             {matchElements.length>0 && <table>
                 <thead>
                     <tr>
+                    <th>Datum</th>
                     <th>Stadion</th>
                     <th>TK</th>
                     <th>SP</th>

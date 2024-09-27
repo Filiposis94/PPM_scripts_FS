@@ -63,7 +63,7 @@ const scrapeEverything = async(dates, tk, socket)=>{
                 return {availability};
             });
             // PUSHING FINAL DATA OF A MATCH
-            finalData.push({id:`${teams[i]}-${dates[j]}`, url, availability:data.availability, capacity:teamData.stadium, tk:teamData.tk, sP:stadiumData.smallPucks, bP:stadiumData.bigPucks})
+            finalData.push({id:`${teams[i]}-${dates[j]}`, date: dates[j],url, availability:data.availability, capacity:teamData.stadium, tk:teamData.tk, sP:stadiumData.smallPucks, bP:stadiumData.bigPucks})
         };
     };
     await browser.close();

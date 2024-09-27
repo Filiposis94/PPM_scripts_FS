@@ -106,7 +106,7 @@ const scrapeFreeMarket = async(cz, socket)=>{
         // FINDING MANAGER PROFILE URL
         const profileLink = await page.evaluate(()=>{
             let profile = document.querySelector('div.h1_header > div:nth-child(1) > div:nth-child(4) > a');
-            if(profile){
+            if(profile && profile.title != 'Pozvi kamaráda do ligy'){
                 return profile.href;
             }
             else {

@@ -16,7 +16,7 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
         const progress = Math.round((i/numOfDays)*100);
         socket.emit('progress',progress);
         let datePPM = getPPMDateMinus(startDate,i);
-        console.log(datePPM);
+        // console.log(datePPM);
         await page.goto(`${URLcalendar}?data=${teamId}-${datePPM}`,{ waitUntil: 'load' });
         // EVALUATE SKIP - if there was a match
         let skip = await page.evaluate(()=>{

@@ -136,6 +136,7 @@ function Tactics(props){
                         </tr>
                     </tbody>
                 </table>
+                <p className="settings"> &gt; Střelba &gt;  Pasivní &gt; Přetižení &gt; Diamant &gt; Deštník &gt; Aktivní &gt;</p>
             </div>}
         </div>
     );
