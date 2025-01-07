@@ -2,8 +2,11 @@ import React from "react";
 import Date from "./Date";
 
 function FriendlyMatchSettings(props){
-    const datesElements = props.availableDates.map((date)=><Date key={date.value} data={date} handleSelect={props.handleSelect}/>);
-    
+    let datesElements = props.availableDates.map((date)=><Date key={date.value} data={date} handleSelect={props.handleSelect}/>);
+      
+    if(datesElements.length < 1){
+        datesElements = 'Nejsou dostupné žádné volné dny';
+    };
     return (
         <div className="settings">
             <h3>Nastavení</h3>

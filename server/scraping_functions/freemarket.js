@@ -121,7 +121,7 @@ const scrapeFreeMarket = async(cz, socket)=>{
             });
             allPlayers[i].lastLogin = lastLogin;
         } else {
-            allPlayers[i].lastLogin = 'Bez manažera'
+            allPlayers[i].lastLogin = '00-Bez manažera'
         };
     };
     await browser.close();

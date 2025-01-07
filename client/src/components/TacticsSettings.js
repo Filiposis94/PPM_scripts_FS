@@ -5,6 +5,7 @@ function TacticsSettings(props){
     return(
         <div className="settings">
             <h3>Nastavení</h3>
+            {props.isLoadingNextOp && <p>Načítám ID nejbližšího soupeře...</p>}
             <p>
                 <label htmlFor="teamId">Team ID:</label>
                 <input type="number" name="teamId" value={props.settings.teamId} onChange={props.handleSettings}></input>

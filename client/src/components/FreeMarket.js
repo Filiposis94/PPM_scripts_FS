@@ -56,7 +56,7 @@ function FreeMarket(props){
             {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
             {!isLoading && <FreemaMarketSettings handleSubmit={handleSubmit} handleSettings={handleSettings} settings={settings}/>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
-            {playersElements.length > 0 && <h3>Vhodní hráči - Bez manažera dole</h3>}
+            {playersElements.length > 0 && <h3>Vhodní hráči</h3>}
             {playersElements}
         </div>
     );

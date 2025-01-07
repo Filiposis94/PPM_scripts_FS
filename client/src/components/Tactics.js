@@ -1,7 +1,10 @@
 import React from "react";
 import axios from 'axios';
 import TacticsSettings from "./TacticsSettings";
+import TacticsResults from "./TacticsResults";
 import Loading from "./Loading";
+
+
 
 function Tactics(props){
     const [tacticsResults, setTacticsResults] = React.useState({});
@@ -14,6 +17,7 @@ function Tactics(props){
         msg:'',
         isShown: false
     });
+    const [isLoadingNextOp, setIsLoadingNextOp] = React.useState(true);
     // EVENT HANDLERS
     function handlePopUp(message){
         setPopUp({
@@ -48,96 +52,30 @@ function Tactics(props){
             setIsLoading(false);
         };
     };
-    console.log(tacticsResults);
-    
+    React.useEffect(()=>{
+        async function fetchData(){
+            try {
+                let res = await axios.get(`/api/v1/scripts/next-opponent`);
+                setSettings((prevSettings)=>{
+                    return {...prevSettings, teamId: res.data};
+                });
+                setIsLoadingNextOp(false);               
+            } catch (error) {
+                console.log(error);
+                handlePopUp(error.response.data.msg);
+                setIsLoadingNextOp(false);               
+            }
+        };
+        fetchData();
+    },[]); 
     return (
         <div>
             <h2>Taktiky</h2>
             {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
-            {!isLoading && <TacticsSettings handleSettings={handleSettings} handleSubmit={handleSubmit} settings={settings}/>}
+            {!isLoading && <TacticsSettings handleSettings={handleSettings} handleSubmit={handleSubmit} settings={settings} isLoadingNextOp={isLoadingNextOp}/>}
             {Object.keys(tacticsResults).length >0 && <h3>Výsledek</h3>}
-            {Object.keys(tacticsResults).length >0 && <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Hlavní taktika</th>
-                            <th>Poměr taktiky</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>Normální</td>
-                        <td>{tacticsResults.nor} %</td>
-                        </tr>
-                        <tr>
-                        <td>Defenzivní</td>
-                        <td>{tacticsResults.def} %</td>
-                        </tr>
-                        <tr>
-                        <td>Ofenzivní</td>
-                        <td>{tacticsResults.off} %</td>
-                        </tr>
-                        <tr>
-                        <td>Aktivní napadání</td>
-                        <td>{tacticsResults.akt} %</td>
-                        </tr>
-                        <tr>
-                        <td>Protiútoky</td>
-                        <td>{tacticsResults.pro} %</td>
-                        </tr>
-                        <tr>
-                        <td>Kouskování hry</td>
-                        <td>{tacticsResults.kou} %</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Přesilovky</th>
-                            <th>Poměr taktiky</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>Střelba od modré</td>
-                        <td>{tacticsResults.str} %</td>
-                        </tr>
-                        <tr>
-                        <td>Deštník</td>
-                        <td>{tacticsResults.des} %</td>
-                        </tr>
-                        <tr>
-                        <td>Přetižení</td>
-                        <td>{tacticsResults.pre} %</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Oslabení</th>
-                            <th>Poměr taktiky</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>Diamant</td>
-                        <td>{tacticsResults.dia} %</td>
-                        </tr>
-                        <tr>
-                        <td>Pasivní obdélník</td>
-                        <td>{tacticsResults.pas} %</td>
-                        </tr>
-                        <tr>
-                        <td>Aktivní obdélník</td>
-                        <td>{tacticsResults.akto} %</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p className="settings"> &gt; Střelba &gt;  Pasivní &gt; Přetižení &gt; Diamant &gt; Deštník &gt; Aktivní &gt;</p>
-            </div>}
+            {Object.keys(tacticsResults).length >0 && <TacticsResults tacticsResults={tacticsResults}/>}
         </div>
     );
 };

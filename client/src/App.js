@@ -11,14 +11,6 @@ import io from 'socket.io-client'
 const URL = process.env.NODE_ENV === 'production' ? undefined :'http://localhost:4000';
 const socket = io.connect(URL);
 
-// TO DO LIST
-// Free market expand player
-// Exapandable settings default false after result
-// Automatic team ID league opponents
-// Tactics more complex visualization
-// Implement results components
-// Client validation
-
 function App() {
   const [page, setPage] = React.useState('menu');
   const [taskProgress, setTaskProgress] = React.useState(0);

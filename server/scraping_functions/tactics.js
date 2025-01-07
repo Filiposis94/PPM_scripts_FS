@@ -32,8 +32,9 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
             // EVALUATE CALENDAR
             const dataCalendar = await page.evaluate(()=>{
                 let dayOfSeason = document.getElementById('day_in_season').innerText.split(' ')[1];
+                let matchType = document.querySelector('div.calendary_center > span:nth-child(3)').innerText;
                 let urlMatch = document.querySelector('div.button.report_icon > a').href;
-                return {dayOfSeason,urlMatch};
+                return {dayOfSeason, matchType, urlMatch};
             });
             // EVALUATE MATCH REPORT
             await page.goto(dataCalendar.urlMatch, { waitUntil: 'load' });
@@ -68,7 +69,7 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
                 return {mainTactics, ppTactics, pkTactics};  
             }, teamId);
             // FINAL DATA
-            finalData.push({day:dataCalendar.dayOfSeason, mainTactics: dataMatch.mainTactics, ppTactics:dataMatch.ppTactics, pkTactics:dataMatch.pkTactics});
+            finalData.push({day:dataCalendar.dayOfSeason, matchType:dataCalendar.matchType, link:dataCalendar.urlMatch, mainTactics: dataMatch.mainTactics, ppTactics:dataMatch.ppTactics, pkTactics:dataMatch.pkTactics});
         };
     };
     // JOINING DATA AND SENDING FINAL OBJECT
