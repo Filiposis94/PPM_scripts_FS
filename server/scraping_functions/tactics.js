@@ -19,7 +19,7 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
         // console.log(datePPM);
         await page.goto(`${URLcalendar}?data=${teamId}-${datePPM}`,{ waitUntil: 'load' });
         // EVALUATE SKIP - if there was a match
-        let skip = await page.evaluate(()=>{
+        const skip = await page.evaluate(()=>{
             if(document.querySelector('div.calendary_center > span:nth-child(3)')){
                 return false;
             } else {
@@ -28,49 +28,61 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
         });
         if(skip){
             continue
-        } else {
-            // EVALUATE CALENDAR
-            const dataCalendar = await page.evaluate(()=>{
-                let dayOfSeason = document.getElementById('day_in_season').innerText.split(' ')[1];
-                let matchType = document.querySelector('div.calendary_center > span:nth-child(3)').innerText;
-                let urlMatch = document.querySelector('div.button.report_icon > a').href;
-                return {dayOfSeason, matchType, urlMatch};
-            });
-            // EVALUATE MATCH REPORT
-            await page.goto(dataCalendar.urlMatch, { waitUntil: 'load' });
-            const dataMatch = await page.evaluate((teamId)=>{
-                let mainTactics;
-                let ppTactics;
-                let pkTactics;
-                let homeTeamUrl = document.querySelector('#top > div:nth-child(12) > table > tbody > tr:nth-child(1) > td.left_align.tr1td1 > a').href;
-                let sOindicator = document.querySelector('.info').innerText.includes('Po samostatných nájezdech');
-                // IF Shoot Out
-                if(sOindicator){
-                    if(homeTeamUrl.includes(teamId)){
-                        mainTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[2].childNodes[1].innerText;
-                        ppTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[3].childNodes[1].innerText;
-                        pkTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[4].childNodes[1].innerText;
-                    } else{
-                        mainTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[2].childNodes[5].innerText;
-                        ppTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[3].childNodes[5].innerText;
-                        pkTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[4].childNodes[5].innerText;
-                    };
-                } else {
-                    if(homeTeamUrl.includes(teamId)){
-                        mainTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[2].childNodes[1].innerText;
-                        ppTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[3].childNodes[1].innerText;
-                        pkTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[4].childNodes[1].innerText;
-                    } else{
-                        mainTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[2].childNodes[5].innerText;
-                        ppTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[3].childNodes[5].innerText;
-                        pkTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[4].childNodes[5].innerText;
-                    };
-                };
-                return {mainTactics, ppTactics, pkTactics};  
-            }, teamId);
-            // FINAL DATA
-            finalData.push({day:dataCalendar.dayOfSeason, matchType:dataCalendar.matchType, link:dataCalendar.urlMatch, mainTactics: dataMatch.mainTactics, ppTactics:dataMatch.ppTactics, pkTactics:dataMatch.pkTactics});
+        }
+        // EVALUATE CALENDAR
+        const dataCalendar = await page.evaluate(()=>{
+            let dayOfSeason = document.getElementById('day_in_season').innerText.split(' ')[1];
+            let matchType = document.querySelector('div.calendary_center > span:nth-child(3)').innerText;
+            let urlMatch = document.querySelector('div.button.report_icon > a').href;
+            return {dayOfSeason, matchType, urlMatch};
+        });
+        // EVALUATE MATCH REPORT
+        await page.goto(dataCalendar.urlMatch, { waitUntil: 'load' });
+        // FORFEIT CASE
+        const forfeit = await page.evaluate(()=>{
+            if(document.querySelector('#top > div.white_box > div.report_header_content > div.report_head_content.info > em > strong > span')){
+                return true;
+            } else {
+                return false;
+            };
+        })
+        if(forfeit){
+            continue
         };
+        // MATCH DATA
+        const dataMatch = await page.evaluate((teamId)=>{
+            let mainTactics;
+            let ppTactics;
+            let pkTactics;
+            let homeTeamUrl = document.querySelector('#top > div:nth-child(12) > table > tbody > tr:nth-child(1) > td.left_align.tr1td1 > a').href;
+            let sOindicator = document.querySelector('.info').innerText.includes('Po samostatných nájezdech');
+            // IF Shoot Out
+            if(sOindicator){
+                if(homeTeamUrl.includes(teamId)){
+                    mainTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[2].childNodes[1].innerText;
+                    ppTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[3].childNodes[1].innerText;
+                    pkTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[4].childNodes[1].innerText;
+                } else{
+                    mainTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[2].childNodes[5].innerText;
+                    ppTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[3].childNodes[5].innerText;
+                    pkTactics = document.querySelectorAll('.white_box')[9].querySelectorAll('tr')[4].childNodes[5].innerText;
+                };
+            } else {
+                if(homeTeamUrl.includes(teamId)){
+                    mainTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[2].childNodes[1].innerText;
+                    ppTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[3].childNodes[1].innerText;
+                    pkTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[4].childNodes[1].innerText;
+                } else{
+                    mainTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[2].childNodes[5].innerText;
+                    ppTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[3].childNodes[5].innerText;
+                    pkTactics = document.querySelectorAll('.white_box')[8].querySelectorAll('tr')[4].childNodes[5].innerText;
+                };
+            };
+            return {mainTactics, ppTactics, pkTactics};  
+        }, teamId);
+        // FINAL DATA
+        finalData.push({day:dataCalendar.dayOfSeason, matchType:dataCalendar.matchType, link:dataCalendar.urlMatch, mainTactics: dataMatch.mainTactics, ppTactics:dataMatch.ppTactics, pkTactics:dataMatch.pkTactics});
+        
     };
     // JOINING DATA AND SENDING FINAL OBJECT
     const mainAr = finalData.map(data=>data.mainTactics).join(' / ').split(' / ');
