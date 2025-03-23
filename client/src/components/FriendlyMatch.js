@@ -102,7 +102,6 @@ function FriendlyMatch(props){
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {!isLoading &&
             <FriendlyMatchSettings 
-            popUp={popUp}
             handleUpdateTeams={handleUpdateTeams}
             handleSubmit={handleSubmit}
             handleSettings={handleSettings}

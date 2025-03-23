@@ -27,7 +27,7 @@ const scrapeEverything = async(dates, tk, socket)=>{
         const teamData = await page.evaluate(()=>{
             let stadium = document.querySelector('div.profile_center_column > table:nth-child(3) > tbody > tr:nth-child(4) > td.tr1td2.left_align').innerText;
             let tk = document.querySelector('div.profile_center_column > table:nth-child(1) > tbody > tr:nth-child(6) > td > div:nth-child(2)').innerText.trim();
-            // Clearing bad data from teams withou manager
+            // Clearing bad data from teams without manager
             if(tk.includes('/')){
             tk = 0;
             };

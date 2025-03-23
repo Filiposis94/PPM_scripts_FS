@@ -5,6 +5,7 @@ import FreeMarket from "./components/FreeMarket";
 import FriendlyMatch from "./components/FriendlyMatch";
 import Tactics from "./components/Tactics";
 import Visits from "./components/Visits";
+import Power from "./components/Power";
 import ppmLogo from './img/ppm-logo.png';
 
 import io from 'socket.io-client'
@@ -53,6 +54,8 @@ function App() {
     case 'tactics': pageComponent = <Tactics progress={taskProgress} task={task} socketId={socketId}/>;
     break;
     case 'visits': pageComponent = <Visits progress={taskProgress} task={task} socketId={socketId}/>;
+    break;
+    case 'power': pageComponent = <Power progress={taskProgress} task={task} socketId={socketId}/>;
     break;
     default: pageComponent = "";
   };

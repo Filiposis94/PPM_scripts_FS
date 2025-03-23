@@ -11,6 +11,7 @@ function NavigationHP(props){
         <div className="button hp-button" onClick={()=>{props.handlePage('friendlymatch')}}>Přáteláky<img className="hp-img" src={hockey} alt="hockey"></img></div>
         <div className="button hp-button" onClick={()=>{props.handlePage('tactics')}}>Taktiky<img className="hp-img" src={clipboard} alt="clipboard"></img></div>
         <div className="button hp-button" onClick={()=>{props.handlePage('visits')}}>Návštěvnost<img className="hp-img" src={people} alt="people"></img></div>
+        <div className="button hp-button" onClick={()=>{props.handlePage('power')}}>Síly teamů<img className="hp-img" src={people} alt="people"></img></div>
         </nav>
     );
 

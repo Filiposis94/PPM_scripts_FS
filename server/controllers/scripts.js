@@ -6,6 +6,8 @@ const scrapeEverything = require('../scraping_functions/friendly-matches');
 const scrapeVisits = require('../scraping_functions/visits');
 const scrapeTactics = require('../scraping_functions/tactics');
 const scrapeNextOpponent = require('../scraping_functions/next-opponent');
+const scrapePower = require('../scraping_functions/team-power');
+const scrapeTeamsPower = require('../scraping_functions/getteams-power');
 
 const getFreeMarket = async (req, res)=>{
     const {cz, socketId} = req.query;
@@ -52,6 +54,19 @@ const getNextOpponent = async (req, res) =>{
     res.status(200).json(data);
 };
 
+const getTeamsPower = async (req, res)=>{
+    await scrapeTeamsPower();
+    res.status(200).json({msg:'Teamy úspěšně aktualizovány'})
+};
+
+const getPower = async (req, res)=>{
+    const {socketId, header} = req.query;
+    const sockets = req.sockets;
+    const socket = sockets.get(socketId);
+    const data = await scrapePower(socket, header);
+    res.status(200).json(data);
+};
+
 module.exports = {
     getFreeMarket,
     getFriendlyMatches,
@@ -59,5 +74,7 @@ module.exports = {
     getVisits,
     getAvailableDates,
     getTeams,
-    getNextOpponent
+    getNextOpponent,
+    getTeamsPower,
+    getPower
 };
