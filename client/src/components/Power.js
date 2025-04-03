@@ -66,11 +66,13 @@ function Power(props){
     // ELEMENTS
     const tableHeader = headers.map(h=><th key={h}>{h}</th>);
     const powerTable = teamPowers.map(item=>{
-        let prevPowers = item.prevData.split(',');
         let teamPowers = [];
-        for(let i=0; i<prevPowers.length; i++){
-            teamPowers.push(<td>{prevPowers[i]}</td>);
-        };
+        if(item.prevData){
+            let prevPowers = item.prevData.split(',');
+            for(let i=0; i<prevPowers.length; i++){
+                teamPowers.push(<td>{prevPowers[i]}</td>);
+            };
+        }
         teamPowers.push(<td>{item.power}</td>);
         teamPowers.unshift(<td>{item.name}</td>)
         return <tr>{teamPowers}</tr>
