@@ -1,10 +1,13 @@
 require('express-async-errors');
+require('dotenv').config();
 const helmet = require('helmet');
 const cors = require('cors');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 const express = require('express');
 const app = express();
+// Connect DB
+const connectDB = require('./db/connect');
 const path = require('path');
 // SOCKET IO
 const http = require('http');
@@ -62,7 +65,8 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 4000;
 const start = async ()=>{
-    try {
+    try {      
+        await connectDB(process.env.MONGO_URI)
         server.listen(port, ()=>{
             console.log(`Server listening on port ${port}...`);
         });

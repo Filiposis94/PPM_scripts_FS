@@ -14,7 +14,7 @@ function Power(props){
     const [teamPowers, setTeamPowers] = React.useState([]);
     const [headers, setHeaders] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    
+    const [update, setUpdate] = React.useState('Default');
     // EVENT HANDLERS
     function handlePopUp(message){
         setPopUp({
@@ -44,10 +44,10 @@ function Power(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            const res = await axios.get(`/api/v1/scripts/power?socketId=${props.socketId}&header=${settings.header}`);
-            setTeamPowers(res.data.finalData);
-            setHeaders(res.data.fullHeader.split(','));
-            setIsLoading(false);               
+            const res = await axios.patch(`/api/v1/scripts/power?socketId=${props.socketId}&header=${settings.header}`);
+            handlePopUp(res.data.msg);
+            setIsLoading(false);
+            setUpdate('Updated');               
         } catch (error) {
             console.log(error);
             handlePopUp(error.response.data.msg);            
@@ -62,22 +62,33 @@ function Power(props){
                 [name]:value
             };
         });
-    };
+    };  
+    React.useEffect(()=>{
+            async function fetchData(){
+                try {
+                    let res = await axios.get(`/api/v1/scripts/power`);
+                    setHeaders(res.data.headers);
+                    setTeamPowers(res.data.teams);
+                } catch (error) {
+                    console.log(error);
+                    handlePopUp(error.response.data.msg);
+                }
+            };
+            fetchData();
+        },[update]);
     // ELEMENTS
-    const tableHeader = headers.map(h=><th key={h}>{h}</th>);
+    let tableHeader;
+    if(headers.length>0){
+        tableHeader = headers[0].rounds.map(h=><th key={h}>{h}</th>);
+    };
     const powerTable = teamPowers.map(item=>{
         let teamPowers = [];
-        if(item.prevData){
-            let prevPowers = item.prevData.split(',');
-            for(let i=0; i<prevPowers.length; i++){
-                teamPowers.push(<td>{prevPowers[i]}</td>);
-            };
-        }
-        teamPowers.push(<td>{item.power}</td>);
-        teamPowers.unshift(<td>{item.name}</td>)
-        return <tr>{teamPowers}</tr>
-    })
-
+        for(let i=0; i<item.powers.length; i++){
+            teamPowers.push(<td key={i}>{item.powers[i]}</td>);
+        };
+        teamPowers.unshift(<td key={item.name}>{item.name}</td>)      
+        return <tr key={item.ppmId}>{teamPowers}</tr>
+    });
     return (
         <div>
             <h2>Síly teamů</h2>
