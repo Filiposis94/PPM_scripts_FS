@@ -63,7 +63,14 @@ const getTeamsPower = async (req, res)=>{
 };
 
 const getPower = async (req, res)=>{
-    const teams = await Team.find();
+    const {league} = req.query;
+    const queryObject = {};
+
+    if(league){
+        queryObject.league = league;
+    }
+
+    const teams = await Team.find(queryObject);
     const headers = await Header.find();
     res.status(200).json({teams, headers});
 };

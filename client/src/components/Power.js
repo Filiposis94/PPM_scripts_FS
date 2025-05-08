@@ -9,7 +9,8 @@ function Power(props){
         isShown: false
     });
     const [settings, setSettings] = React.useState({
-        header:''
+        header:'',
+        league: 'all'
     });
     const [teamPowers, setTeamPowers] = React.useState([]);
     const [headers, setHeaders] = React.useState([]);
@@ -66,16 +67,21 @@ function Power(props){
     React.useEffect(()=>{
             async function fetchData(){
                 try {
-                    let res = await axios.get(`/api/v1/scripts/power`);
-                    setHeaders(res.data.headers);
-                    setTeamPowers(res.data.teams);
+                    if(settings.league === 'all'){
+                        let res = await axios.get(`/api/v1/scripts/power`);
+                        setHeaders(res.data.headers);
+                        setTeamPowers(res.data.teams);
+                    } else {
+                        let res = await axios.get(`/api/v1/scripts/power?league=${settings.league}`);
+                        setTeamPowers(res.data.teams);
+                    }
                 } catch (error) {
                     console.log(error);
                     handlePopUp(error.response.data.msg);
                 }
             };
             fetchData();
-        },[update]);
+        },[update, settings]);
     // ELEMENTS
     let tableHeader;
     if(headers.length>0){
