@@ -10,7 +10,8 @@ function Power(props){
     });
     const [settings, setSettings] = React.useState({
         header:'',
-        league: 'all'
+        league: 'all',
+        sort: ''
     });
     const [teamPowers, setTeamPowers] = React.useState([]);
     const [headers, setHeaders] = React.useState([]);
@@ -55,24 +56,32 @@ function Power(props){
             setIsLoading(false);
         };
     };
-    function handleSettings(event){
-        const {value, name} = event.target;
+    function handleSettings(event){        
+        const {value, name} = event.target;        
         setSettings((prevSettings)=>{
             return {
                 ...prevSettings,
                 [name]:value
             };
         });
-    };  
+    }; 
+    function handeSort(column){
+        setSettings((prevSettings)=>{
+            return {
+                ...prevSettings,
+                sort: column
+            };
+        });
+    };
     React.useEffect(()=>{
             async function fetchData(){
                 try {
                     if(settings.league === 'all'){
-                        let res = await axios.get(`/api/v1/scripts/power`);
+                        let res = await axios.get(`/api/v1/scripts/power?sort=${settings.sort}`);
                         setHeaders(res.data.headers);
                         setTeamPowers(res.data.teams);
                     } else {
-                        let res = await axios.get(`/api/v1/scripts/power?league=${settings.league}`);
+                        let res = await axios.get(`/api/v1/scripts/power?league=${settings.league}&sort=${settings.sort}`);
                         setTeamPowers(res.data.teams);
                     }
                 } catch (error) {
@@ -85,7 +94,7 @@ function Power(props){
     // ELEMENTS
     let tableHeader;
     if(headers.length>0){
-        tableHeader = headers[0].rounds.map(h=><th key={h}>{h}</th>);
+        tableHeader = headers[0].rounds.map((h, i)=><th key={h} onClick={()=>handeSort(i)}>{h}</th>);
     };
     const powerTable = teamPowers.map(item=>{
         let teamPowers = [];

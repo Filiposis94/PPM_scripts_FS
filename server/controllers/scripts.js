@@ -63,14 +63,25 @@ const getTeamsPower = async (req, res)=>{
 };
 
 const getPower = async (req, res)=>{
-    const {league} = req.query;
-    const queryObject = {};
+    const {league, sort} = req.query;
+    const pipeline = [];
 
     if(league){
-        queryObject.league = league;
-    }
-
-    const teams = await Team.find(queryObject);
+        pipeline.push({$match: {league}});
+    } else {
+        pipeline.push({$match: {}});
+    };   
+    if(sort != ''){       
+        pipeline.push({
+            $addFields:{
+                sortingPower: {$arrayElemAt: ['$powers', Number(sort)]}
+            }
+        });
+        pipeline.push({
+            $sort: {sortingPower: -1}
+        });   
+    };
+    const teams = await Team.aggregate(pipeline);
     const headers = await Header.find();
     res.status(200).json({teams, headers});
 };
