@@ -82,6 +82,7 @@ function Power(props){
                         setTeamPowers(res.data.teams);
                     } else {
                         let res = await axios.get(`/api/v1/scripts/power?league=${settings.league}&sort=${settings.sort}`);
+                        setHeaders(res.data.headers);
                         setTeamPowers(res.data.teams);
                     }
                 } catch (error) {

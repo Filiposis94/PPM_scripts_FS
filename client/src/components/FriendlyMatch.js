@@ -16,6 +16,22 @@ function FriendlyMatch(props){
     });
     const [availableMatches, setAvailableMatches] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
+
+    let homeMatches = [];
+    let awayMatches = [];
+
+    for(let i=0; i<availableMatches.length; i++){
+        if(availableMatches[i].capacity.includes('20000') && availableMatches[i].sP === 80 && availableMatches[i].bP>18 ){
+            awayMatches.push(availableMatches[i]);
+        } else {
+            homeMatches.push(availableMatches[i]);
+        }
+    }
+
+    console.log(availableMatches.length);
+    console.log(homeMatches.length);
+    console.log(awayMatches.length);
+    
     // EVENT HANDLERS
     function handlePopUp(message){
         setPopUp({
@@ -74,6 +90,15 @@ function FriendlyMatch(props){
             };
         });
     };
+
+    function handleWindowOpening(array){
+        const delay = 200;       
+        for(let i=0; i<array.length; i++){
+             setTimeout(() => {
+            window.open(array[i].url);
+        }, i * delay);
+        };
+    }
     React.useEffect(()=>{
         async function fetchData(){
             try {
@@ -112,7 +137,9 @@ function FriendlyMatch(props){
             />        
             }
             {matchElements.length>0 && <h3>Vhodné zápasy</h3>}
-            {matchElements.length>0 && <table>
+            {matchElements.length>0 && <div><p className="settings"><button className="button" onClick={()=>{handleWindowOpening(awayMatches)}}>Open Away ({awayMatches.length})</button>
+            <button className="button" onClick={()=>{handleWindowOpening(homeMatches)}}>Open Home ({homeMatches.length})</button>
+            </p><table>
                 <thead>
                     <tr>
                     <th>Datum</th>
@@ -125,7 +152,7 @@ function FriendlyMatch(props){
                 <tbody>
                     {matchElements}
                 </tbody>
-            </table>}
+            </table></div>}
         </div>
     );
 };
