@@ -13,10 +13,10 @@ const Team = require('../models/Team');
 const Header = require('../models/Header');
 
 const getFreeMarket = async (req, res)=>{
-    const {cz, socketId} = req.query;
+    const {cz, socketId, offset} = req.query;
     const sockets = req.sockets;
     const socket = sockets.get(socketId);
-    const data = await scrapeFreeMarket(cz, socket);
+    const data = await scrapeFreeMarket(cz, socket, offset);
     res.status(200).json(data);
 };
 const getFriendlyMatches = async (req, res)=>{

@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const URLmarket = `https://hockey.powerplaymanager.com/cs/trh.html`;
 
-const scrapeFreeMarket = async(cz, socket)=>{
+const scrapeFreeMarket = async(cz, socket, offset)=>{
     // INITIALIZATION  
     socket.emit('task', 'Zahajuji proces...');
     const browser = await puppeteer.launch({headless: true});
@@ -10,7 +10,9 @@ const scrapeFreeMarket = async(cz, socket)=>{
     // 1. GETTING LIST OF PLAYERS AVAILABLE
     // FILLING MARKET INPUTS
     await page.select('#market_type','3');
-    await page.type('input[name=contract_to]', '8');  //only tomorrow bid closing
+    // Bid closing based on offset
+    await page.type('input[name=contract_from]', `${8 + Number(offset)}`)
+    await page.type('input[name=contract_to]', `${8 + Number(offset)}`);
     await page.type('input[name=index_skill_from', cz);
     await page.click('#filter_market > form > table:nth-child(5) > tbody > tr > td:nth-child(1) > button');
     await page.waitForNetworkIdle();

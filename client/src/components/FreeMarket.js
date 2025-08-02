@@ -6,8 +6,10 @@ import Loading from "./Loading";
 
 function FreeMarket(props){
     const [settings, setSettings] = React.useState({
-        cz:1800
+        cz:1800,
+        offset: 0
     });
+    console.log(settings)
     const [players, setPlayers] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [popUp, setPopUp] = React.useState({
@@ -39,7 +41,7 @@ function FreeMarket(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            let res = await axios.get(`/api/v1/scripts/freemarket?cz=${settings.cz}&socketId=${props.socketId}`);
+            let res = await axios.get(`/api/v1/scripts/freemarket?cz=${settings.cz}&socketId=${props.socketId}&offset=${settings.offset}`);
             setPlayers(res.data);
             setIsLoading(false);
         } catch (error) {
