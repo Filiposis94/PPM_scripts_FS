@@ -39,6 +39,8 @@ const scrapeEverything = async(dates, tk, socket)=>{
         // SKIPPING TEAMS WITH LOW TK
         if(teamData.tk.length <6){continue};
         if(teamData.tk < tk){continue};
+        //SKIP MY TEAM
+        if(teams[i] === '129335'){continue}
         // GATHERING STADIUM DATA
         await page.goto(`${URLstadium}?data=${teams[i]}`, {waitUntil: 'load'});
         const stadiumData = await page.evaluate(()=>{
