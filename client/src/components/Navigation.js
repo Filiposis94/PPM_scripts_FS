@@ -1,4 +1,3 @@
-import React from "react";
 
 function Navigation(props){
     return (
@@ -8,6 +7,7 @@ function Navigation(props){
         <button className="button" onClick={()=>{props.handlePage('tactics')}}>Taktiky</button>
         <button className="button" onClick={()=>{props.handlePage('visits')}}>Návštěvnost</button>
         <button className="button" onClick={()=>{props.handlePage('power')}}>Síly teamů</button>
+        <button className="button" onClick={()=>{props.handlePage('soonfreemarket')}}>Brzy volní hráči</button>
         </nav>
     );
 

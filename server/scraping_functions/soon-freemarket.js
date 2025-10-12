@@ -1,19 +1,20 @@
 const puppeteer = require('puppeteer');
 const URLmarket = `https://hockey.powerplaymanager.com/cs/trh.html`;
 
-const scrapeFreeMarket = async(cz, socket, offset)=>{
+const scrapeSoonFreeMarket = async(socket)=>{
     // INITIALIZATION  
     socket.emit('task', 'Zahajuji proces...');
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
     await page.goto(URLmarket, { waitUntil: 'networkidle0' });
     // 1. GETTING LIST OF PLAYERS AVAILABLE
+    
     // FILLING MARKET INPUTS
-    await page.select('#market_type','3');
-    // Bid closing based on offset
-    await page.type('input[name=contract_from]', `${8 + Number(offset)}`)
-    await page.type('input[name=contract_to]', `${8 + Number(offset)}`);
-    await page.type('input[name=index_skill_from', cz);
+    await page.select('#market_type','1');
+    await page.type('input[name=age_from]', '26');
+    await page.type('input[name=contract_to]', '40');
+    await page.type('input[name=index_skill_from', '2000');
+
     await page.click('#filter_market > form > table:nth-child(5) > tbody > tr > td:nth-child(1) > button');
     await page.waitForNetworkIdle();
     // GETTING UNIQUE ID OF SEARCH FOR PAGINATION
@@ -25,7 +26,6 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
     let allPlayers = [];
     let listLength;
     // Scan first page, go to next, if there are rows do it again
-    // console.log('Phase 1 Gathering players');
     socket.emit('task', 'Shromažďuji hráče...');
     do{
         // Scaning rows on a page
@@ -33,7 +33,6 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
             let infoArray = [];
             let allRows = document.querySelectorAll('#table-1 > tbody > tr');
             for(let i = 1; i<allRows.length + 1; i++){
-                // for(let i = 1; i<2; i++){ //DEV
                 // Scaning each player 
                     let name = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td.name > a.link_name`).innerText;
                     let link = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td.name > a.link_name`).href;
@@ -49,6 +48,8 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
                     let zku = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Zkušenost]`).innerText;
                     let prs = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title='Preferovaná strana']`).innerText;
                     
+                    const ppmId = link.split('=')[1].split('-')[0];
+
                     infoArray.push({
                         name,
                         link,
@@ -62,7 +63,8 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
                         tec,
                         agr,
                         zku,
-                        prs
+                        prs,
+                        ppmId
                     });
                 } 
             return infoArray;
@@ -73,69 +75,57 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
         };
         // Checking if next page has some rows
         await page.goto(`https://hockey.powerplaymanager.com/cs/trh.html?data=${marketPage}-${idOfSearch}`,{ waitUntil: 'networkidle0' });
-        const newLenght = await page.evaluate(()=>{
+        const newLength = await page.evaluate(()=>{
             return document.querySelectorAll('#table-1 > tbody > tr').length;   
 
         });
-        listLength = newLenght;
+        listLength = newLength;
         marketPage++
     } while (listLength >0);
-    // 2. CHECKING MANAGERS OF THOSE PLAYERS
-    socket.emit('task', 'Procházím managery...');
-    // console.log('Phase 2 checking managers');
+    socket.emit('task', 'Procházím hráče...');
     for(let i=0; i<allPlayers.length;i++){
         // Emiting progress
         const progress = Math.round(((i+1)/allPlayers.length)*100);
         socket.emit('progress',progress);
-        // GOING TO HISTORY PAGE OF A PLAYER
-        const playerId = allPlayers[i].link.split('=')[1].split('-')[0];
-        allPlayers[i].id = playerId; //FOR React key
-        const historyLink = `https://hockey.powerplaymanager.com/cs/historie-hrace.html?data=${playerId}`;
-        await page.goto(historyLink, { waitUntil: 'networkidle0' });
-        // FINDING LAST TEAM OF THE PLAYER
-        const teamLink = await page.evaluate(()=>{
-            // Last owner trade
-            let lastOwner = document.querySelectorAll('.name')[1];
-            if(lastOwner){
-                return lastOwner.childNodes[2].href;
-            } else{
-                return document.querySelector('div.white_box.left_corner_none > table:nth-child(4) > tbody > tr:nth-child(1) > td.tr0td2 > a').href;
-            };
-        });
-        // GOING TO TO TEAM PAGE
-        await page.goto(teamLink, { waitUntil: 'networkidle0' });
-        // FINDING MANAGER PROFILE URL
-        const profileLink = await page.evaluate(()=>{
-            let profile = document.querySelector('div.h1_header > div:nth-child(1) > div:nth-child(4) > a');
-            if(profile && profile.title != 'Pozvi kamaráda do ligy'){
-                return profile.href;
+
+        const playerLink = `https://hockey.powerplaymanager.com/cs/historie-hrace.html?data=${allPlayers[i].ppmId}`
+        await page.goto(playerLink, { waitUntil: 'networkidle0' });
+        const dateOfEnteringUfa = await page.evaluate(()=>{
+        const tables = document.querySelectorAll('table.table')
+        const lastTable = tables[tables.length -1]
+        const rows = lastTable.querySelectorAll('tbody tr')
+        let dateOfLastSigning;
+        for(let j=rows.length -1; j>=0; j--){
+            const cells = rows[j].querySelectorAll('td');
+            if(cells[2].innerText.trim() === 'Prodloužení smlouvy'){
+                dateOfLastSigning = cells[0].innerText.trim()
+                break 
             }
-            else {
-                return 'Bez manažera';
-            };
-        });
-        // GOING TO MANAGER PROFILE URL AND GETTING LAST LOGIN - IF POSSIBLE
-        if(profileLink != 'Bez manažera'){
-            await page.goto(profileLink, { waitUntil: 'networkidle0' });
-            const lastLogin = await page.evaluate(()=>{
-                return document.querySelectorAll('.table_profile > tbody > tr:nth-child(1)')[1].innerText;
-            });
-            allPlayers[i].lastLogin = lastLogin;
+        }
+        const today = new Date()
+        const daysSinceLastSigning = Math.floor((today - new Date(dateOfLastSigning))/1000/60/60/24)
+        let addedDays;
+        if(daysSinceLastSigning < 112){
+            addedDays = 112 - daysSinceLastSigning - 14
         } else {
-            allPlayers[i].lastLogin = '00-Bez manažera'
-        };
-    };
+            addedDays = 112 - daysSinceLastSigning % 112 - 14
+        }
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate()+ addedDays)
+        
+        return futureDate.toISOString();
+        })
+        allPlayers[i].ufaFrom = new Date(dateOfEnteringUfa);
+        const dateOfLeavingUfa = new Date(dateOfEnteringUfa);
+        dateOfLeavingUfa.setDate(dateOfLeavingUfa.getDate()+7)
+        allPlayers[i].ufaTo = dateOfLeavingUfa;
+    }
+    
+    
     await browser.close();
-    // 3. SORTING AND EXPORTING DATA
     socket.emit('task',''); //Reseting the value
-    allPlayers.sort((a, b)=>{
-        if(a.lastLogin > b.lastLogin){
-            return 1;
-        } else if(b.lastLogin > a.lastLogin){
-            return -1;
-        } else return 0;
-        });
+    
     return allPlayers;
 };
 
-module.exports = scrapeFreeMarket;
+module.exports = scrapeSoonFreeMarket;

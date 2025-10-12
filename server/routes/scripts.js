@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const {getFreeMarket, getFriendlyMatches,getAvailableDates, getTactics, getVisits, getTeams, getNextOpponent, getTeamsPower, getPower, updatePowers} = require('../controllers/scripts');
+const {getFreeMarket, getFriendlyMatches,getAvailableDates, getTactics, getVisits, getTeams, getNextOpponent, getTeamsPower, getPower,
+updatePowers, updateSoonFreeMarket, getSoonFreeMarket, updatePlayer} = require('../controllers/scripts');
 
 router.route('/freemarket').get(getFreeMarket);
 router.route('/friendly-matches').get(getFriendlyMatches);
@@ -12,6 +13,9 @@ router.route('/teams').get(getTeams);
 router.route('/next-opponent').get(getNextOpponent);
 router.route('/teams-power').get(getTeamsPower);
 router.route('/power').get(getPower).patch(updatePowers);
+router.route('/soonfreemarket').get(getSoonFreeMarket).patch(updateSoonFreeMarket)
+router.route('/soonfreemarket/:ppmId').patch(updatePlayer)
+
 
 module.exports = router;
 
