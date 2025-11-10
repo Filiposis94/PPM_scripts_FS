@@ -100,14 +100,14 @@ const updatePowers = async (req, res)=>{
                 name: data[i].name,
                 league: data[i].league,
                 ppmId: data[i].id,
-                powers:[data[i].power]
+                powers:[Number(data[i].power)]
             });
         };
     } else {
         for(let i=0; i<data.length; i++){
             const team = await Team.findOne({ppmId:data[i].id});
             const prevPowers = team.powers;
-            const newPowers = [...prevPowers, data[i].power];
+            const newPowers = [...prevPowers, Number(data[i].power)];
             const updatedTeam = await Team.findOneAndUpdate({ppmId:data[i].id}, {powers:newPowers})
         }
     }
