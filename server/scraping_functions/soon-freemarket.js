@@ -112,7 +112,7 @@ const scrapeSoonFreeMarket = async(socket)=>{
         }
         const futureDate = new Date();
         futureDate.setDate(today.getDate()+ addedDays)
-        
+        futureDate.setHours(7, 0, 0, 0);
         return futureDate.toISOString();
         })
         allPlayers[i].ufaFrom = new Date(dateOfEnteringUfa);
