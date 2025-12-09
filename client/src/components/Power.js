@@ -36,7 +36,7 @@ function Power(props){
                 msg:'Aktualizuji teamy...',
                 isShown:true
             });
-            const res = await axios.get('/api/v1/scripts/teams-power');
+            const res = await axios.get('/api/v1/powers/teams');
             handlePopUp(res.data.msg);
         } catch (error) {
             console.log(error);
@@ -46,7 +46,7 @@ function Power(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            const res = await axios.patch(`/api/v1/scripts/power?socketId=${props.socketId}&header=${settings.header}`);
+            const res = await axios.patch(`/api/v1/powers?socketId=${props.socketId}&header=${settings.header}`);
             handlePopUp(res.data.msg);
             setIsLoading(false);
             setUpdate('Updated');               
@@ -77,11 +77,11 @@ function Power(props){
             async function fetchData(){
                 try {
                     if(settings.league === 'all'){
-                        let res = await axios.get(`/api/v1/scripts/power?sort=${settings.sort}`);
+                        let res = await axios.get(`/api/v1/powers?sort=${settings.sort}`);
                         setHeaders(res.data.headers);
                         setTeamPowers(res.data.teams);
                     } else {
-                        let res = await axios.get(`/api/v1/scripts/power?league=${settings.league}&sort=${settings.sort}`);
+                        let res = await axios.get(`/api/v1/powers?league=${settings.league}&sort=${settings.sort}`);
                         setHeaders(res.data.headers);
                         setTeamPowers(res.data.teams);
                     }

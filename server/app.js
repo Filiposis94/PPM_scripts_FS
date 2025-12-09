@@ -31,7 +31,11 @@ io.on('connection', (socket)=>{
     })
 });
 // IMPORT ROUTER AND MIDDLEWARES
-const scriptsRouter = require('./routes/scripts')
+const freemarketRouter = require('./routes/freemarket')
+const friendlymatchesRouter = require('./routes/friendlymatches')
+const powersRouter = require('./routes/powers')
+const tacticsRouter = require('./routes/tactics')
+const visitsRouter = require('./routes/visits')
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 // Adding list of sockets to request
@@ -52,7 +56,11 @@ app.use(xss());
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // ROUTES
-app.use('/api/v1/scripts', scriptsRouter);
+app.use('/api/v1/freemarket', freemarketRouter)
+app.use('/api/v1/friendly-matches', friendlymatchesRouter)
+app.use('/api/v1/powers', powersRouter)
+app.use('/api/v1/tactics', tacticsRouter)
+app.use('/api/v1/visits', visitsRouter)
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {

@@ -41,7 +41,7 @@ function FreeMarket(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            let res = await axios.get(`/api/v1/scripts/freemarket?cz=${settings.cz}&socketId=${props.socketId}&offset=${settings.offset}`);
+            let res = await axios.get(`/api/v1/freemarket?cz=${settings.cz}&socketId=${props.socketId}&offset=${settings.offset}`);
             setPlayers(res.data);
             setIsLoading(false);
         } catch (error) {

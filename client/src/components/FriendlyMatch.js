@@ -51,7 +51,7 @@ function FriendlyMatch(props){
                 msg:'Aktualizuji teamy...',
                 isShown:true
             });
-            const res = await axios.get('/api/v1/scripts/teams');
+            const res = await axios.get('/api/v1/friendly-matches/teams');
             handlePopUp(res.data.msg);
         } catch (error) {
             console.log(error);
@@ -71,7 +71,7 @@ function FriendlyMatch(props){
             if(availableDates.filter(date => date.isSelected === true).length >0 ){
                 setIsLoading(true);
                 const joinedDates = availableDates.filter(date=>date.isSelected).map(date=>date.value).join(',');
-                const res = await axios.get(`/api/v1/scripts/friendly-matches?dates=${joinedDates}&tk=${settings.tk}&socketId=${props.socketId}`);
+                const res = await axios.get(`/api/v1/friendly-matches/?dates=${joinedDates}&tk=${settings.tk}&socketId=${props.socketId}`);
                 setAvailableMatches(res.data);
                 setIsLoading(false); 
             };            
@@ -102,7 +102,7 @@ function FriendlyMatch(props){
     React.useEffect(()=>{
         async function fetchData(){
             try {
-                let res = await axios.get(`/api/v1/scripts/available-dates`);
+                let res = await axios.get(`/api/v1/friendly-matches/dates`);
                 setAvailableDates(res.data.map((date)=>{
                     return {
                         value:date,

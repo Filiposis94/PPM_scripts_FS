@@ -43,7 +43,7 @@ function Tactics(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            const res = await axios.get(`/api/v1/scripts/tactics?teamId=${settings.teamId}&numOfDays=${settings.numOfDays}&socketId=${props.socketId}`);
+            const res = await axios.get(`/api/v1/tactics?teamId=${settings.teamId}&numOfDays=${settings.numOfDays}&socketId=${props.socketId}`);
             setTacticsResults(res.data);
             setIsLoading(false);
         } catch (error) {
@@ -55,7 +55,7 @@ function Tactics(props){
     React.useEffect(()=>{
         async function fetchData(){
             try {
-                let res = await axios.get(`/api/v1/scripts/next-opponent`);
+                let res = await axios.get(`/api/v1/tactics/next-opponent`);
                 setSettings((prevSettings)=>{
                     return {...prevSettings, teamId: res.data};
                 });

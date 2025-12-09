@@ -43,7 +43,7 @@ function Visits(props){
                 setIsLoading(true);
                 const splitSD = settings.startDate.split('-');
                 const flippedSD = `${splitSD[2]}-${splitSD[1]}-${splitSD[0]}`;
-                const res = await axios.get(`/api/v1/scripts/visits?startDate=${flippedSD}&numOfDays=${settings.numOfDays}&socketId=${props.socketId}`);
+                const res = await axios.get(`/api/v1/visits?startDate=${flippedSD}&numOfDays=${settings.numOfDays}&socketId=${props.socketId}`);
                 setVisitResults(res.data); 
                 setIsLoading(false);           
             };

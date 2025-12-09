@@ -26,7 +26,7 @@ function SoonFreeMarket(props){
    
     const fetchData = React.useCallback(async ()=>{
         try {
-            let res = await axios.get(`/api/v1/scripts/soonfreemarket`);
+            let res = await axios.get(`/api/v1/freemarket/soon`);
             setPlayers(res.data);
         } catch (error) {
             console.log(error);
@@ -36,7 +36,7 @@ function SoonFreeMarket(props){
     async function handleSubmit(){
         try {
             setIsLoading(true);
-            let res = await axios.patch(`/api/v1/scripts/soonfreemarket?socketId=${props.socketId}`);
+            let res = await axios.post(`/api/v1/freemarket/soon?socketId=${props.socketId}`);
             handlePopUp(res.data.msg)
             setIsLoading(false);
             fetchData()
@@ -53,7 +53,7 @@ function SoonFreeMarket(props){
             })
             return newPlayers
         })
-        await axios.patch(`/api/v1/scripts/soonfreemarket/${id}`,{
+        await axios.patch(`/api/v1/freemarket/soon/${id}`,{
         interestedIn: newState
         })
         fetchData();
