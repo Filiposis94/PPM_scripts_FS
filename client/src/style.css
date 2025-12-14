@@ -23,6 +23,10 @@ h1, h2, h3{
   text-align: center;
   font-family: var(--ff-heading);
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 nav{
   text-align: center;
 }
@@ -58,7 +62,6 @@ td{
   padding: 10px;
   font-size: 16px;
   font-family: var(--ff-main);
-
 }
 .flex{
   display: flex;

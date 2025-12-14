@@ -8,22 +8,16 @@ import Visits from "./components/Visits";
 import Power from "./components/Power";
 import SoonFreeMarket from "./components/SoonFreeMarket"
 import ppmLogo from './img/ppm-logo.png';
-
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import io from 'socket.io-client'
 const URL = process.env.NODE_ENV === 'production' ? undefined :'http://localhost:4000';
 const socket = io.connect(URL);
 
 function App() {
-  const [page, setPage] = React.useState('menu');
   const [taskProgress, setTaskProgress] = React.useState(0);
   const [task, setTask] = React.useState('');
   const [socketId, setSocketId] = React.useState('');
   
-  // HANDLERS
-  function handlePage(page){
-    setPage(page);
-  };
-
   // IO HANDLERS
   React.useEffect(()=>{
     function handleTaskProgress(data){
@@ -45,31 +39,22 @@ function App() {
     }
   },[]);
 
-  // ELEMENTS
-  let pageComponent;
-  switch(page){
-    case 'freemarket': pageComponent = <FreeMarket progress={taskProgress} task={task} socketId={socketId}/>;
-    break;
-    case 'friendlymatch': pageComponent = <FriendlyMatch progress={taskProgress} task={task} socketId={socketId} />;
-    break;
-    case 'tactics': pageComponent = <Tactics progress={taskProgress} task={task} socketId={socketId}/>;
-    break;
-    case 'visits': pageComponent = <Visits progress={taskProgress} task={task} socketId={socketId}/>;
-    break;
-    case 'power': pageComponent = <Power progress={taskProgress} task={task} socketId={socketId}/>;
-    break;
-    case 'soonfreemarket': pageComponent = <SoonFreeMarket progress={taskProgress} task={task} socketId={socketId}/>;
-    break;
-    default: pageComponent = "";
-  };
-
-  // RENDERING
   return (
+    <BrowserRouter>
     <div className="container">
-      <h1><img src={ppmLogo} alt="ppm-logo" onClick={()=>{handlePage('menu')}}></img></h1>
-      {page === 'menu'? <NavigationHP handlePage={handlePage}/> : <Navigation handlePage={handlePage}/>}
-      {pageComponent}
+      <h1><Link to="/"><img src={ppmLogo} alt="ppm-logo"/></Link></h1>
+      <Navigation/>
+      <Routes>
+        <Route path="/" element={<NavigationHP/>}/>
+        <Route path="/freemarket" element={<FreeMarket progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/friendly-match" element={<FriendlyMatch progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/tactics" element={<Tactics progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/visits" element={<Visits progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/powers" element={<Power progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/soon-freemarket" element={<SoonFreeMarket progress={taskProgress} task={task} socketId={socketId}/>}/>
+      </Routes>
       </div>
+    </BrowserRouter>
   );
 };
 

@@ -1,15 +1,18 @@
+import { useLocation, Link } from "react-router-dom";
+
 
 function Navigation(props){
+    const location = useLocation();
     return (
-        <nav>
-        <button className="button" onClick={()=>{props.handlePage('freemarket')}}>Volní hráči</button>
-        <button className="button" onClick={()=>{props.handlePage('friendlymatch')}}>Přáteláky</button>
-        <button className="button" onClick={()=>{props.handlePage('tactics')}}>Taktiky</button>
-        <button className="button" onClick={()=>{props.handlePage('visits')}}>Návštěvnost</button>
-        <button className="button" onClick={()=>{props.handlePage('power')}}>Síly teamů</button>
-        <button className="button" onClick={()=>{props.handlePage('soonfreemarket')}}>Brzy volní hráči</button>
-        </nav>
-    );
+    location.pathname !== "/" ? <nav>
+        <button className="button" ><Link to="freemarket">Volní hráči</Link></button>
+        <button className="button" ><Link to="friendly-match">Přáteláky</Link></button>
+        <button className="button" ><Link to="tactics">Taktiky</Link></button>
+        <button className="button" ><Link to="visits">Návštěvnost</Link></button>
+        <button className="button" ><Link to="power">Síly teamů</Link></button>
+        <button className="button" ><Link to="soon-freemarket">Brzy volní hráči</Link></button>
+        </nav> : null
+    )
 
 }
 
