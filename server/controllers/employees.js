@@ -4,12 +4,14 @@ const Employee = require('../models/Employee')
 const getEmployeeHistory = async (req, res)=>{
     res.status(202).json({status:'started'});
     setImmediate(async ()=>{
+        console.log('Starting scrape')
         const data = await scrapeEmployeeHistory();
+        console.log('Scrape finished successfully')
         const startOfDay = new Date();
         startOfDay.setUTCHours(0, 0, 0, 0);
         const endOfDay = new Date();
         endOfDay.setUTCHours(23, 59, 59, 999);
-        
+        console.log('Saving to DB...')
         
         const currentDayTrades = await Employee.find({tradedAt: { $gte: startOfDay, $lt: endOfDay } })
         
