@@ -23,7 +23,7 @@ const scrapeEmployeeHistory = async()=>{
                     const name = allRows[i].querySelectorAll(`td.name > a`)[1].innerText;
                     const link = allRows[i].querySelectorAll(`td.name > a`)[1].href;
                     const time = allRows[i].querySelectorAll(`td.name > div`)[0].innerText.split(' (')[0]
-                    const price = allRows[i].querySelectorAll(`td`)[1].innerText.replace(' ','');
+                    const price = allRows[i].querySelectorAll(`td`)[1].innerText.replaceAll(' ','');
                     const age = allRows[i].querySelectorAll(`td`)[2].innerText;
                     const type = allRows[i].querySelectorAll(`td`)[3].innerText;
                     const prk = allRows[i].querySelectorAll(`td`)[4].innerText;
