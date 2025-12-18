@@ -32,21 +32,21 @@ const scrapeSoonFreeMarket = async(socket)=>{
         const tempArray = await page.evaluate(()=>{
             let infoArray = [];
             let allRows = document.querySelectorAll('#table-1 > tbody > tr');
-            for(let i = 1; i<allRows.length + 1; i++){
+            for(let i = 0; i<allRows.length; i++){
                 // Scaning each player 
-                    let name = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td.name > a.link_name`).innerText;
-                    let link = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td.name > a.link_name`).href;
-                    let age = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Věk]`).innerText;
-                    let sv = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title='Sportovní výdrž']`).innerText;
-                    let bra = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Brána]`).innerHTML.split('<')[0];
-                    let obr = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Obrana]`).innerHTML.split('<')[0];
-                    let uto = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Útok]`).innerHTML.split('<')[0];
-                    let str = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Střela]`).innerHTML.split('<')[0];
-                    let nah = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Nahrávka]`).innerHTML.split('<')[0];
-                    let tec = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Technika]`).innerHTML.split('<')[0];
-                    let agr = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Agresivita]`).innerHTML.split('<')[0];
-                    let zku = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title=Zkušenost]`).innerText;
-                    let prs = document.querySelector(`#table-1 > tbody > tr:nth-child(${i}) > td[title='Preferovaná strana']`).innerText;
+                    let name = allRows[i].querySelector(`td.name > a.link_name`).innerText;
+                    let link = allRows[i].querySelector(`td.name > a.link_name`).href;
+                    let age = allRows[i].querySelector(`td[title=Věk]`).innerText;
+                    let sv = allRows[i].querySelector(`td[title='Sportovní výdrž']`).innerText;
+                    let bra = allRows[i].querySelector(`td[title=Brána]`).innerHTML.split('<')[0];
+                    let obr = allRows[i].querySelector(`td[title=Obrana]`).innerHTML.split('<')[0];
+                    let uto = allRows[i].querySelector(`td[title=Útok]`).innerHTML.split('<')[0];
+                    let str = allRows[i].querySelector(`td[title=Střela]`).innerHTML.split('<')[0];
+                    let nah = allRows[i].querySelector(`td[title=Nahrávka]`).innerHTML.split('<')[0];
+                    let tec = allRows[i].querySelector(`td[title=Technika]`).innerHTML.split('<')[0];
+                    let agr = allRows[i].querySelector(`td[title=Agresivita]`).innerHTML.split('<')[0];
+                    let zku = allRows[i].querySelector(`td[title=Zkušenost]`).innerText;
+                    let prs = allRows[i].querySelector(`td[title='Preferovaná strana']`).innerText;
                     
                     const ppmId = link.split('=')[1].split('-')[0];
 
