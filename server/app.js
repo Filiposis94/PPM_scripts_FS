@@ -36,6 +36,7 @@ const friendlymatchesRouter = require('./routes/friendlymatches')
 const powersRouter = require('./routes/powers')
 const tacticsRouter = require('./routes/tactics')
 const visitsRouter = require('./routes/visits')
+const employeesRouter = require('./routes/employees')
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 // Adding list of sockets to request
@@ -61,6 +62,7 @@ app.use('/api/v1/friendly-matches', friendlymatchesRouter)
 app.use('/api/v1/powers', powersRouter)
 app.use('/api/v1/tactics', tacticsRouter)
 app.use('/api/v1/visits', visitsRouter)
+app.use('/api/v1/employees', employeesRouter)
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
