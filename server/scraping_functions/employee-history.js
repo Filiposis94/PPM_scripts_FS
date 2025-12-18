@@ -1,14 +1,12 @@
 const puppeteer = require('puppeteer');
 const URLmarket = `https://hockey.powerplaymanager.com/cs/top-prodeje-zamestnancu.html?data=lastday`;
 
-const scrapeEmployeeHistory = async(socket)=>{
+const scrapeEmployeeHistory = async()=>{
     // INITIALIZATION  
-    // socket.emit('task', 'Zahajuji proces...');
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
     await page.goto(URLmarket, { waitUntil: 'networkidle0' });
     // 1. GETTING LAST DAY TRADES
-    // GETTING UNIQUE ID OF SEARCH FOR PAGINATION
     // OTHER VARS FOR SCANING
     let marketPage = 2;
     let allEmployees = [];
@@ -63,10 +61,8 @@ const scrapeEmployeeHistory = async(socket)=>{
         listLength = newLenght;
         marketPage++
     } while (listLength >0);
-    // socket.emit('progress', 100)
     await browser.close();
     // 3. EXPORTING DATA
-    // socket.emit('task',''); //Reseting the value
     return allEmployees;
 };
 
