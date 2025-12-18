@@ -120,6 +120,7 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket)=>{
         all: finalData
     };
     socket.emit('task', '');
+    socket.emit('progress', 0);
     await browser.close();
     return finalObj;
 };

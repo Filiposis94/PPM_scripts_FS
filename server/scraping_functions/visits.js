@@ -56,6 +56,7 @@ const scrapeVisits = async (startDate, numOfDays, socket)=>{
         }
     }
     socket.emit('task', '');
+    socket.emit('progress', 0);
     await browser.close();
     return finalData;
 };

@@ -70,6 +70,7 @@ const scrapeEverything = async(dates, tk, socket)=>{
     };
     await browser.close();
     socket.emit('task',''); //Reseting the value
+    socket.emit('progress', 0)
     // FILTERING AND SORTING DATA
     let filteredData = finalData.filter(item =>item.availability == 'free');
     filteredData.sort((a, b)=>{

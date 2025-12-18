@@ -128,6 +128,7 @@ const scrapeFreeMarket = async(cz, socket, offset)=>{
     await browser.close();
     // 3. SORTING AND EXPORTING DATA
     socket.emit('task',''); //Reseting the value
+    socket.emit('progress', 0)
     allPlayers.sort((a, b)=>{
         if(a.lastLogin > b.lastLogin){
             return 1;

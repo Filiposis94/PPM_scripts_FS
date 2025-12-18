@@ -37,6 +37,7 @@ const scrapePower = async(socket)=>{
     };
     await browser.close();
     socket.emit('task',''); //Reseting the value
+    socket.emit('progress',0);
     return finalData;
 };
 
