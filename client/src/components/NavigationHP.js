@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 function NavigationHP(){
     return (
         <nav>   
-        <div className="button hp-button" ><Link to="/freemarket">Volní hráči<img className="hp-img" src={magGlass} alt="magnifying glass"></img></Link></div>
-        <div className="button hp-button" ><Link to="firendly-match">Přáteláky<img className="hp-img" src={hockey} alt="hockey"></img></Link></div>
-        <div className="button hp-button" ><Link to="tactics">Taktiky<img className="hp-img" src={clipboard} alt="clipboard"></img></Link></div>
-        <div className="button hp-button" ><Link to="visits">Návštěvnost<img className="hp-img" src={people} alt="people"></img></Link></div>
-        <div className="button hp-button" ><Link to="power">Síly teamů<img className="hp-img" src={graph} alt="people"></img></Link></div>
-        <div className="button hp-button" ><Link to="soon-freemarket">Brzy volní hráči<img className="hp-img" src={magGlass} alt="people"></img></Link></div>
+        <div className="button hp-button" ><Link to="/freemarket"><div>Volní hráči<img className="hp-img" src={magGlass} alt="magnifying glass"></img></div></Link></div>
+        <div className="button hp-button" ><Link to="firendly-match"><div>Přáteláky<img className="hp-img" src={hockey} alt="hockey"></img></div></Link></div>
+        <div className="button hp-button" ><Link to="tactics"><div>Taktiky<img className="hp-img" src={clipboard} alt="clipboard"></img></div></Link></div>
+        <div className="button hp-button" ><Link to="visits"><div>Návštěvnost<img className="hp-img" src={people} alt="people"></img></div></Link></div>
+        <div className="button hp-button" ><Link to="power"><div>Síly teamů<img className="hp-img" src={graph} alt="people"></img></div></Link></div>
+        <div className="button hp-button" ><Link to="soon-freemarket"><div>Brzy volní hráči<img className="hp-img" src={magGlass} alt="people"></img></div></Link></div>
         </nav>
     );
 

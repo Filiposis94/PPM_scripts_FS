@@ -50,7 +50,7 @@ function App() {
         <Route path="/friendly-match" element={<FriendlyMatch progress={taskProgress} task={task} socketId={socketId}/>}/>
         <Route path="/tactics" element={<Tactics progress={taskProgress} task={task} socketId={socketId}/>}/>
         <Route path="/visits" element={<Visits progress={taskProgress} task={task} socketId={socketId}/>}/>
-        <Route path="/powers" element={<Power progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/power" element={<Power progress={taskProgress} task={task} socketId={socketId}/>}/>
         <Route path="/soon-freemarket" element={<SoonFreeMarket progress={taskProgress} task={task} socketId={socketId}/>}/>
       </Routes>
       </div>
