@@ -27,7 +27,7 @@ jobs:
 
       - name: Trigger Render scrape endpoint
         run: |
-          curl -v -X POST \
+          curl -v \
             --max-time 30 \
             "https://ppm-scripts-fs.onrender.com/api/v1/employees"
 
