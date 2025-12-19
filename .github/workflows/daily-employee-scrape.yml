@@ -2,34 +2,39 @@ name: Daily employee scrape
 
 on:
   schedule:
-    # Runs every day at 23:00 UTC (11 PM UTC)
-    - cron: "0 23 * * *"
-
-  # Allows manual runs from GitHub UI
+    - cron: "0 23 * * *"   # 23:00 UTC (best-effort)
   workflow_dispatch:
-    inputs:
-      reason:
-        description: "Why are you running this manually?"
-        required: false
-        default: "Manual debug run"
 
 jobs:
-  trigger-scrape:
+  scrape:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Log trigger info
+      - name: Wake Render service
         run: |
-          echo "Triggered at: $(date -u)"
-          echo "Trigger reason: ${{ github.event.inputs.reason }}"
-          echo "Triggered by: ${{ github.actor }}"
-          echo "Event type: ${{ github.event_name }}"
+          echo "Waking Render service..."
+          curl -v --max-time 180 https://your-app.onrender.com/health
 
-      - name: Trigger Render scrape endpoint
+      - name: Wait 1 minute for warm-up
         run: |
-          curl -v \
-            --max-time 30 \
-            "https://ppm-scripts-fs.onrender.com/api/v1/employees"
+          echo "Waiting 60 seconds..."
+          sleep 60
 
-      - name: Done
-        run: echo "Scrape trigger completed"
+      - name: Trigger scrape (up to 3 retries)
+        run: |
+          echo "Triggering scrape with retries..."
+          for i in 1 2 3; do
+            echo "Attempt $i..."
+            if curl -f --max-time 30 \
+              -H "X-CRON-SECRET: ${{ secrets.CRON_SECRET }}" \
+              -X POST https://your-app.onrender.com/scrape; then
+              echo "Scrape triggered successfully"
+              exit 0
+            fi
+
+            echo "Attempt $i failed, waiting 60 seconds before retry..."
+            sleep 60
+          done
+
+          echo "All attempts failed"
+          exit 1
