@@ -1,7 +1,7 @@
 const scrapeEmployeeHistory = require('../scraping_functions/employee-history')
 const Employee = require('../models/Employee')
 
-const getEmployeeHistory = async (req, res)=>{
+const updateEmployeeHistory = async (req, res)=>{
     res.status(202).json({status:'started'});
     setImmediate(async ()=>{
         console.log('Starting scrape')
@@ -28,5 +28,5 @@ const getEmployeeHistory = async (req, res)=>{
 }
 
 module.exports = {
-    getEmployeeHistory
+    updateEmployeeHistory
 }

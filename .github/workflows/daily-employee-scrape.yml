@@ -2,7 +2,7 @@ name: Daily employee scrape
 
 on:
   schedule:
-    - cron: "0 23 * * *"   # 23:00 UTC (best-effort)
+    - cron: "0 23 * * *"
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - name: Wake Render service
         run: |
           echo "Waking Render service..."
-          curl -v --max-time 180 https://your-app.onrender.com/health
+          curl -v --max-time 180 https://ppm-scripts-fs.onrender.com/health
 
       - name: Wait 1 minute for warm-up
         run: |
@@ -27,7 +27,7 @@ jobs:
             echo "Attempt $i..."
             if curl -f --max-time 30 \
               -H "X-CRON-SECRET: ${{ secrets.CRON_SECRET }}" \
-              -X POST https://your-app.onrender.com/scrape; then
+              -X POST https://ppm-scripts-fs.onrender.com/api/v1/employees/scrape; then
               echo "Scrape triggered successfully"
               exit 0
             fi
