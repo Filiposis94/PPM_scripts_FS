@@ -13,7 +13,7 @@ jobs:
       - name: Wake Render service
         run: |
           echo "Waking Render service..."
-          curl -v --max-time 180 https://ppm-scripts-fs.onrender.com/health
+          curl -v --max-time 180 https://ppm-scripts-fs.onrender.com/
 
       - name: Wait 1 minute for warm-up
         run: |
@@ -27,7 +27,7 @@ jobs:
             echo "Attempt $i..."
             if curl -f --max-time 30 \
               -H "X-CRON-SECRET: ${{ secrets.CRON_SECRET }}" \
-              -X POST https://ppm-scripts-fs.onrender.com/api/v1/employees/scrape; then
+              -X POST https://ppm-scripts-fs.onrender.com/api/v1/employees; then
               echo "Scrape triggered successfully"
               exit 0
             fi
