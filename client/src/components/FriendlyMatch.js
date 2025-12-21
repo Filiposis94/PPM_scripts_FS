@@ -12,7 +12,8 @@ function FriendlyMatch(props){
         isShown: false
     });
     const [settings, setSettings] = React.useState({
-        tk:400
+        tk:400,
+        moreData: false
     });
     const [availableMatches, setAvailableMatches] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -27,11 +28,7 @@ function FriendlyMatch(props){
             homeMatches.push(availableMatches[i]);
         }
     }
-
-    console.log(availableMatches.length);
-    console.log(homeMatches.length);
-    console.log(awayMatches.length);
-    
+   
     // EVENT HANDLERS
     function handlePopUp(message){
         setPopUp({
@@ -71,7 +68,7 @@ function FriendlyMatch(props){
             if(availableDates.filter(date => date.isSelected === true).length >0 ){
                 setIsLoading(true);
                 const joinedDates = availableDates.filter(date=>date.isSelected).map(date=>date.value).join(',');
-                const res = await axios.get(`/api/v1/friendly-matches/?dates=${joinedDates}&tk=${settings.tk}&socketId=${props.socketId}`);
+                const res = await axios.get(`/api/v1/friendly-matches/?dates=${joinedDates}&tk=${settings.tk}&socketId=${props.socketId}&moreData=${settings.moreData}`);
                 setAvailableMatches(res.data);
                 setIsLoading(false); 
             };            
@@ -82,11 +79,11 @@ function FriendlyMatch(props){
         };
     };
     function handleSettings(event){
-        const {value, name} = event.target;
+        const {value, name, type, checked} = event.target;
         setSettings((prevSettings)=>{
             return {
                 ...prevSettings,
-                [name]:value
+                [name]:type === 'checkbox' ? checked : value
             };
         });
     };
@@ -119,7 +116,7 @@ function FriendlyMatch(props){
         fetchData();
     },[]);
     // ELEMENTS
-    const matchElements = availableMatches.map((match)=><Match key={match.id} data={match}/>);
+    const matchElements = availableMatches.map((match)=><Match key={match.id} data={match} settings={settings}/>);
     return (
         <div>
             <h2>Přátelské zápasy</h2>
@@ -147,6 +144,7 @@ function FriendlyMatch(props){
                     <th>TK</th>
                     <th>SP</th>
                     <th>BP</th>
+                    {settings.moreData && <><th>Position</th><th>NP placement</th></>}
                     </tr>
                 </thead>
                 <tbody>

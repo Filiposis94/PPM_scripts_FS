@@ -5,11 +5,13 @@ const scrapeEverything = require('../scraping_functions/friendly-matches');
 
 
 const getFriendlyMatches = async (req, res)=>{
-    const {tk, dates, socketId} = req.query;
+    const {tk, dates, socketId, moreData} = req.query;
     const datesArray = dates.split(',');
     const sockets = req.sockets;
     const socket = sockets.get(socketId);
-    const data = await scrapeEverything(datesArray, tk, socket);
+    const actualBoolean = moreData === 'true'? true : false
+
+    const data = await scrapeEverything(datesArray, tk, socket, actualBoolean);
     res.status(200).json(data);
 };
 const getAvailableDates = async (req, res)=>{

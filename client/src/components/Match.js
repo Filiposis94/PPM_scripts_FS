@@ -9,6 +9,7 @@ function Match(props){
             <td>{match.tk}</td>
             <td>{match.sP}</td>
             <td>{match.bP}</td>
+            {props.settings.moreData && <><td>{match.position}</td><td>{match.npPlacement}</td></>}
        </tr>
     );
 };

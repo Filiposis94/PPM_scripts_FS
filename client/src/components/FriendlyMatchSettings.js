@@ -17,8 +17,10 @@ function FriendlyMatchSettings(props){
             <p>
                 <label htmlFor="tk">TK:</label>
                 <input type="number" name="tk" value={props.settings.tk} onChange={props.handleSettings}></input>
+                <label htmlFor="moreData">LM/NP data:</label>
+                <input type="checkbox" name="moreData" checked={props.settings.moreData} onChange={props.handleSettings}></input>
             </p>
-            <button className="button" onClick={props.handleSubmit}>Najdi zápasy</button>
+            <button className="button" onClick={props.handleSubmit} onChange={props.handleSettings}>Najdi zápasy</button>
             
         </div>
     );
