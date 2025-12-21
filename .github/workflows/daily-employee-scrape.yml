@@ -13,7 +13,7 @@ jobs:
       - name: Wake Render service
         run: |
           echo "Waking Render service..."
-          curl -v --max-time 180 https://ppm-scripts-fs.onrender.com/
+          curl -v --max-time 30 https://ppm-scripts-fs.onrender.com/ || true
 
       - name: Wait 1 minute for warm-up
         run: |
