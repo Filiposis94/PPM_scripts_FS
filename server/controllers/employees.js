@@ -27,6 +27,26 @@ const updateEmployeeHistory = async (req, res)=>{
     })
 }
 
+const getEmployees = async (req, res) =>{
+    const {type} = req.query;
+    const pipeline = [];
+
+    if(type){
+        pipeline.push({$match: {type}})
+    }
+    //Sort by price by default
+    pipeline.push({
+        $sort: {
+            price: -1
+        }
+    })
+    const employees = await Employee.aggregate(pipeline)
+    res.status(200).json(employees)
+    //Pagination with cursor later
+}
+    
+
 module.exports = {
-    updateEmployeeHistory
+    updateEmployeeHistory,
+    getEmployees
 }

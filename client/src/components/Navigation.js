@@ -11,6 +11,7 @@ function Navigation(props){
         <button className="button" ><Link to="visits">Návštěvnost</Link></button>
         <button className="button" ><Link to="power">Síly teamů</Link></button>
         <button className="button" ><Link to="soon-freemarket">Brzy volní hráči</Link></button>
+        <button className="button" ><Link to="employees">Trh historie zaměstnanci</Link></button>
         </nav> : null
     )
 

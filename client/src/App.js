@@ -7,6 +7,7 @@ import Tactics from "./components/Tactics";
 import Visits from "./components/Visits";
 import Power from "./components/Power";
 import SoonFreeMarket from "./components/SoonFreeMarket"
+import Employees from "./components/Employees";
 import ppmLogo from './img/ppm-logo.png';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import io from 'socket.io-client'
@@ -52,6 +53,7 @@ function App() {
         <Route path="/visits" element={<Visits progress={taskProgress} task={task} socketId={socketId}/>}/>
         <Route path="/power" element={<Power progress={taskProgress} task={task} socketId={socketId}/>}/>
         <Route path="/soon-freemarket" element={<SoonFreeMarket progress={taskProgress} task={task} socketId={socketId}/>}/>
+        <Route path="/employees" element={<Employees/>}/>
       </Routes>
       </div>
     </BrowserRouter>
