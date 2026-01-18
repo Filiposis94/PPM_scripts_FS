@@ -1,7 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 
 
-function Navigation(props){
+function Navigation(){
     const location = useLocation();
     return (
     location.pathname !== "/" ? <nav>

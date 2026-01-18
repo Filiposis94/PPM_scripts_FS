@@ -30,7 +30,6 @@ const updateEmployeeHistory = async (req, res)=>{
 const getEmployees = async (req, res) =>{
     const {type} = req.query;
     const pipeline = [];
-
     if(type){
         pipeline.push({$match: {type}})
     }

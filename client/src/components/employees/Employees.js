@@ -1,31 +1,19 @@
 import React from "react";
 import axios from "axios";
 import Employee from "./Employee"
+import { usePopup } from "../../hooks/handlePopUp";
+
+
 
 function Employees(){
+    const { popup, showPopup } = usePopup();
     const [employees, setEmployees] = React.useState([]);
-    const [popUp, setPopUp] = React.useState({
-            msg:'',
-            isShown: false
-    });
     const [filters, setFilters] = React.useState({
         type:'Trenér'
     })
     const [submittedFilters, setSubmittedFilters] = React.useState(filters)
-    console.log(filters)
 
-    const handlePopUp = React.useCallback((message)=>{
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    },[]);
+    const handlePopUpCallback = React.useCallback((message)=>showPopup(message),[showPopup]);
 
     const handleFilter = (event)=>{
         const {name, value} = event.target
@@ -47,18 +35,18 @@ function Employees(){
                 setEmployees(res.data);
             } catch (error) {
                 console.log(error);
-                handlePopUp(error.response.data.msg);
+                handlePopUpCallback(error.response.data.msg);
             }
         };
         fetchData()
-    },[handlePopUp, submittedFilters]);
+    },[handlePopUpCallback, submittedFilters]);
     // RESULT ELEMENTS
     const employeeElements = employees.map((employee)=><Employee key={employee.ppmId} data={employee} />);
     return (
         <div>
             <div className="settings">
                 <h2>Historie prodejů</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             <button className="button" onClick={handleSubmit}>Odeslat</button>
             <select name="type" onChange={handleFilter}>
                 <option value='Trenér'>Trenér</option>
@@ -71,7 +59,6 @@ function Employees(){
             </select>
             
             </div>
-            {/* {employeeElements.length > 0 && <h3>Vhodní hráči - {playersElements.length}</h3>} */}
             
              <table>
                 <thead>

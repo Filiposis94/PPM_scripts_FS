@@ -1,13 +1,11 @@
 import React from "react";
 import axios from 'axios';
 import PowerSettings from "./PowerSettings";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 function Power(props){
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
+    const {popup, showPopup} = usePopup()
     const [settings, setSettings] = React.useState({
         header:'',
         league: 'all',
@@ -18,41 +16,27 @@ function Power(props){
     const [isLoading, setIsLoading] = React.useState(false);
     const [update, setUpdate] = React.useState('Default');
     // EVENT HANDLERS
-    function handlePopUp(message){
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    };
+
     async function handleUpdateTeams(){
         try {
-            setPopUp({
-                msg:'Aktualizuji teamy...',
-                isShown:true
-            });
+            showPopup('Aktualizuji teamy...');
             const res = await axios.get('/api/v1/powers/teams');
-            handlePopUp(res.data.msg);
+            showPopup(res.data.msg);
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            showPopup(error.response.data.msg);
         };
     };
     async function handleSubmit(){
         try {
             setIsLoading(true);
             const res = await axios.patch(`/api/v1/powers?socketId=${props.socketId}&header=${settings.header}`);
-            handlePopUp(res.data.msg);
+            showPopup(res.data.msg);
             setIsLoading(false);
             setUpdate('Updated');               
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);            
+            showPopup(error.response.data.msg);            
             setIsLoading(false);
         };
     };
@@ -87,11 +71,11 @@ function Power(props){
                     }
                 } catch (error) {
                     console.log(error);
-                    handlePopUp(error.response.data.msg);
+                    showPopup(error.response.data.msg);
                 }
             };
             fetchData();
-        },[update, settings]);
+        },[update, settings, showPopup]);
     // ELEMENTS
     let tableHeader;
     if(headers.length>0){
@@ -108,7 +92,7 @@ function Power(props){
     return (
         <div>
             <h2>Síly teamů</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {!isLoading &&
             <PowerSettings

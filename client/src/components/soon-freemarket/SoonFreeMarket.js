@@ -1,28 +1,15 @@
 import React from "react";
 import axios from "axios";
 import PlayerSFM from "./PlayerSFM";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 function SoonFreeMarket(props){
+    const {popup, showPopup} = usePopup()
     const [players, setPlayers] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
     
-    const handlePopUp = React.useCallback((message)=>{
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    },[]);
+    const handlePopUpCallback = React.useCallback((message)=>showPopup(message),[showPopup]);
    
     const fetchData = React.useCallback(async ()=>{
         try {
@@ -30,19 +17,19 @@ function SoonFreeMarket(props){
             setPlayers(res.data);
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            handlePopUpCallback(error.response.data.msg);
         }
-    },[handlePopUp]);
+    },[handlePopUpCallback]);
     async function handleSubmit(){
         try {
             setIsLoading(true);
             let res = await axios.post(`/api/v1/freemarket/soon?socketId=${props.socketId}`);
-            handlePopUp(res.data.msg)
+            handlePopUpCallback(res.data.msg)
             setIsLoading(false);
             fetchData()
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            handlePopUpCallback(error.response.data.msg);
             setIsLoading(false);
         };
     };
@@ -67,7 +54,7 @@ function SoonFreeMarket(props){
     return (
         <div>
             <h2>Volní hráči - brzy na trhu</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {!isLoading && <div className="settings"><button className="button" onClick={handleSubmit}> Aktualizuj hráče</button></div>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {playersElements.length > 0 && <h3>Vhodní hráči - {playersElements.length}</h3>}

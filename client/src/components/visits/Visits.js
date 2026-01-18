@@ -2,32 +2,19 @@ import React from "react";
 import axios from 'axios';
 import VisitsData from "./VisitsData";
 import VisitsSettings from "./VisitsSettings";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 function Visits(props){
+    const {popup, showPopup} = usePopup()
     const [settings, setSettings] = React.useState({
         startDate:'',
         numOfDays:30
     });
     const [visitsResults, setVisitResults] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
+
     // EVENT HANDLERS
-    function handlePopUp(message){
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    };
     function handleSettings(event){
         const {value, name} = event.target;
         setSettings((prevSettings)=>{
@@ -49,7 +36,7 @@ function Visits(props){
             };
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            showPopup(error.response.data.msg);
             setIsLoading(false);           
         };
     };
@@ -58,7 +45,7 @@ function Visits(props){
     return (
         <div>
             <h2>Návštěvnost</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {isLoading && <Loading task={props.task} progress={props.progress} />}
             {!isLoading && <VisitsSettings handleSettings={handleSettings} handleSubmit={handleSubmit} settings={settings}/>}
             {visitsElements.length >0 && <h3>Výsledek</h3>}

@@ -1,5 +1,3 @@
-import React from "react";
-
 function Player(props){
     const player = props.data;
     return (

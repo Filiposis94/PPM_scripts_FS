@@ -2,32 +2,18 @@ import React from "react";
 import axios from "axios";
 import Player from "./Player";
 import FreemaMarketSettings from "./FreeMarketSettings";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 function FreeMarket(props){
+    const {popup, showPopup} = usePopup();
     const [settings, setSettings] = React.useState({
         cz:1800,
         offset: 0
     });
-    console.log(settings)
     const [players, setPlayers] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
-    function handlePopUp(message){
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    };
+   
     // EVENT HANDLERS
     function handleSettings(event){
         const {value, name} = event.target;
@@ -46,7 +32,7 @@ function FreeMarket(props){
             setIsLoading(false);
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            showPopup(error.response.data.msg);
             setIsLoading(false);
         };
     };
@@ -55,7 +41,7 @@ function FreeMarket(props){
     return (
         <div>
             <h2>Volní hráči</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {!isLoading && <FreemaMarketSettings handleSubmit={handleSubmit} handleSettings={handleSettings} settings={settings}/>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {playersElements.length > 0 && <h3>Vhodní hráči</h3>}

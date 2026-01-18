@@ -2,35 +2,21 @@ import React from "react";
 import axios from 'axios';
 import TacticsSettings from "./TacticsSettings";
 import TacticsResults from "./TacticsResults";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 
 
 function Tactics(props){
+    const {popup, showPopup} = usePopup()
     const [tacticsResults, setTacticsResults] = React.useState({});
     const [settings, setSettings] = React.useState({
         teamId:'',
         numOfDays:60
     });
     const [isLoading, setIsLoading] = React.useState(false);
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
     const [isLoadingNextOp, setIsLoadingNextOp] = React.useState(true);
     // EVENT HANDLERS
-    function handlePopUp(message){
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    };
     function handleSettings(event){
         const {value, name} = event.target;
         setSettings((prevSettings)=>{
@@ -48,7 +34,7 @@ function Tactics(props){
             setIsLoading(false);
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            showPopup(error.response.data.msg);
             setIsLoading(false);
         };
     };
@@ -62,16 +48,16 @@ function Tactics(props){
                 setIsLoadingNextOp(false);               
             } catch (error) {
                 console.log(error);
-                handlePopUp(error.response.data.msg);
+                showPopup(error.response.data.msg);
                 setIsLoadingNextOp(false);               
             }
         };
         fetchData();
-    },[]); 
+    },[showPopup]); 
     return (
         <div>
             <h2>Taktiky</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {!isLoading && <TacticsSettings handleSettings={handleSettings} handleSubmit={handleSubmit} settings={settings} isLoadingNextOp={isLoadingNextOp}/>}
             {Object.keys(tacticsResults).length >0 && <h3>Výsledek</h3>}

@@ -1,5 +1,3 @@
-import React from "react";
-
 function Loading(props){
     let styles = {width: `${props.progress}%`};
     return (

@@ -1,5 +1,3 @@
-import React from "react";
-
 function Match(props){
     const match = props.data;
     return (

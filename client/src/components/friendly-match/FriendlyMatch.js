@@ -2,15 +2,14 @@ import React from "react";
 import axios from 'axios';
 import Match from "./Match";
 import FriendlyMatchSettings from "./FriendlyMatchSettings";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import { usePopup } from "../../hooks/handlePopUp";
 
 function FriendlyMatch(props){
+    const {popup, showPopup} = usePopup
     const [availableDates, setAvailableDates] = React.useState([]);
     const [isloadingDates, setIsLoadingDates] = React.useState(true);
-    const [popUp, setPopUp] = React.useState({
-        msg:'',
-        isShown: false
-    });
+    
     const [settings, setSettings] = React.useState({
         tk:400,
         moreData: false
@@ -30,29 +29,14 @@ function FriendlyMatch(props){
     }
    
     // EVENT HANDLERS
-    function handlePopUp(message){
-        setPopUp({
-            msg: message,
-            isShown:true
-        });
-        setTimeout(()=>{
-            setPopUp({
-                msg:'',
-                isShown:false
-            });
-        }, 5000);
-    };
     async function handleUpdateTeams(){
         try {
-            setPopUp({
-                msg:'Aktualizuji teamy...',
-                isShown:true
-            });
+            showPopup('Aktualizuji teamy...');
             const res = await axios.get('/api/v1/friendly-matches/teams');
-            handlePopUp(res.data.msg);
+            showPopup(res.data.msg);
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);
+            showPopup(error.response.data.msg);
         };
     };
     function handleSelect(clickedDate){
@@ -74,7 +58,7 @@ function FriendlyMatch(props){
             };            
         } catch (error) {
             console.log(error);
-            handlePopUp(error.response.data.msg);            
+            showPopup(error.response.data.msg);            
             setIsLoading(false);
         };
     };
@@ -109,18 +93,18 @@ function FriendlyMatch(props){
                 setIsLoadingDates(false);
             } catch (error) {
                 console.log(error);
-                handlePopUp(error.response.data.msg);
+                showPopup(error.response.data.msg);
                 setIsLoadingDates(false);
             }
         };
         fetchData();
-    },[]);
+    },[showPopup]);
     // ELEMENTS
     const matchElements = availableMatches.map((match)=><Match key={match.id} data={match} settings={settings}/>);
     return (
         <div>
             <h2>Přátelské zápasy</h2>
-            {popUp.isShown && <p className="popUp">{popUp.msg}</p>}
+            {popup.isShown && <p className="popUp">{popup.msg}</p>}
             {isLoading && <Loading task={props.task} progress={props.progress}/>}
             {!isLoading &&
             <FriendlyMatchSettings 
