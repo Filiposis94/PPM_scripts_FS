@@ -5,13 +5,13 @@ function Navigation(){
     const location = useLocation();
     return (
     location.pathname !== "/" ? <nav>
-        <button className="button" ><Link to="freemarket">Volní hráči</Link></button>
-        <button className="button" ><Link to="friendly-match">Přáteláky</Link></button>
-        <button className="button" ><Link to="tactics">Taktiky</Link></button>
-        <button className="button" ><Link to="visits">Návštěvnost</Link></button>
-        <button className="button" ><Link to="power">Síly teamů</Link></button>
-        <button className="button" ><Link to="soon-freemarket">Brzy volní hráči</Link></button>
-        <button className="button" ><Link to="employees">Trh historie zaměstnanci</Link></button>
+        <Link to="freemarket"><button className="button" >Volní hráči</button></Link>
+        <Link to="friendly-match"><button className="button" >Přáteláky</button></Link>
+        <Link to="tactics"><button className="button" >Taktiky</button></Link>
+        <Link to="visits"><button className="button" >Návštěvnost</button></Link>
+        <Link to="power"><button className="button" >Síly teamů</button></Link>
+        <Link to="soon-freemarket"><button className="button" >Brzy volní hráči</button></Link>
+        <Link to="employees"><button className="button" >Trh historie zaměstnanci</button></Link>
         </nav> : null
     )
 
