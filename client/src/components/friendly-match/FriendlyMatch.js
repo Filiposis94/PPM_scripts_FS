@@ -6,7 +6,7 @@ import Loading from "../Loading";
 import { usePopup } from "../../hooks/handlePopUp";
 
 function FriendlyMatch(props){
-    const {popup, showPopup} = usePopup
+    const {popup, showPopup} = usePopup()
     const [availableDates, setAvailableDates] = React.useState([]);
     const [isloadingDates, setIsLoadingDates] = React.useState(true);
     
