@@ -40,6 +40,9 @@ th{
   text-align: center;
   padding: 2px 5px;
 }
+table th:first-child{
+  white-space: nowrap;
+}
 tr:nth-child(even){
   background-color: var(--color-table-primary);
 }
