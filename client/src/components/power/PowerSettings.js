@@ -3,7 +3,11 @@ function PowerSettings(props) {
 		<div className="settings">
 			<h3>Nastavení</h3>
 			<p>
-				<button type="button" onClick={props.handleUpdateTeams}>
+				<button
+					type="button"
+					className="button"
+					onClick={props.handleUpdateTeams}
+				>
 					Aktualizuj teamy
 				</button>
 			</p>
@@ -18,7 +22,9 @@ function PowerSettings(props) {
 						required
 					></input>
 				</p>
-				<button type="button">Stáhni sílu teamů</button>
+				<button type="button" className="button">
+					Stáhni sílu teamů
+				</button>
 				<select name="league" onChange={props.handleSettings}>
 					<option value="all">All</option>
 					<option value="I.1">I.1</option>
