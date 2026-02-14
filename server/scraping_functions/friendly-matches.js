@@ -63,7 +63,7 @@ const scrapeEverything = async(dates, tk, socket, moreData)=>{
                 for(let i = 0; i < historyRows.length; i++){
                     if(historyRows[i].innerText.includes('árodního poháru') || historyRows[i].innerText.includes('árodním poháru')){
                         return {
-                            npPlacement: historyRows[i].innerText.includes('\t')? historyRows[i].innerText.trim().split()[2] : historyRows[i].innerText.trim()
+                            npPlacement: historyRows[i].innerText.includes('\t')? historyRows[i].innerText.trim().split('\t')[2] : historyRows[i].innerText.trim()
                         }
                     }
                 }
