@@ -1,51 +1,57 @@
-const scrapeEmployeeHistory = require('../scraping_functions/employee-history')
-const Employee = require('../models/Employee')
+const scrapeEmployeeHistory = require("../scraping_functions/employee-history")
+const Employee = require("../models/Employee")
 
-const updateEmployeeHistory = async (req, res)=>{
-    res.status(202).json({status:'started'});
-    setImmediate(async ()=>{
-        console.log('Starting scrape')
-        const data = await scrapeEmployeeHistory();
-        console.log('Scrape finished successfully')
-        const startOfDay = new Date();
-        startOfDay.setUTCHours(0, 0, 0, 0);
-        const endOfDay = new Date();
-        endOfDay.setUTCHours(23, 59, 59, 999);
-        console.log('Saving to DB...')
-        
-        const currentDayTrades = await Employee.find({tradedAt: { $gte: startOfDay, $lt: endOfDay } })
-        
-        for(let i=0; i<data.length; i++){
-            const isInDb = currentDayTrades.find(emp=> emp.ppmId === Number(data[i].ppmId))
-            const  [hours, minutes, seconds] = data[i].time.split(':').map(Number)
-            
-            if(!isInDb){
-                const date = new Date()
-                await Employee.create({...data[i], tradedAt:date.setUTCHours(hours, minutes, seconds)})
-            } else {continue}
-        }
-    })
+const updateEmployeeHistory = async (_req, res) => {
+	res.status(202).json({ status: "started" })
+	setImmediate(async () => {
+		console.log("Starting scrape")
+		const data = await scrapeEmployeeHistory()
+		console.log("Scrape finished successfully")
+		const startOfDay = new Date()
+		startOfDay.setUTCHours(0, 0, 0, 0)
+		const endOfDay = new Date()
+		endOfDay.setUTCHours(23, 59, 59, 999)
+		console.log("Saving to DB...")
+
+		const currentDayTrades = await Employee.find({
+			tradedAt: { $gte: startOfDay, $lt: endOfDay }
+		})
+
+		for (let i = 0; i < data.length; i++) {
+			const isInDb = currentDayTrades.find(
+				(emp) => emp.ppmId === Number(data[i].ppmId)
+			)
+			const [hours, minutes, seconds] = data[i].time.split(":").map(Number)
+			if (isInDb) {
+				continue
+			}
+			const date = new Date()
+			await Employee.create({
+				...data[i],
+				tradedAt: date.setUTCHours(hours, minutes, seconds)
+			})
+		}
+	})
 }
 
-const getEmployees = async (req, res) =>{
-    const {type} = req.query;
-    const pipeline = [];
-    if(type){
-        pipeline.push({$match: {type}})
-    }
-    //Sort by price by default
-    pipeline.push({
-        $sort: {
-            price: -1
-        }
-    })
-    const employees = await Employee.aggregate(pipeline)
-    res.status(200).json(employees)
-    //Pagination with cursor later
+const getEmployees = async (req, res) => {
+	const { type } = req.query
+	const pipeline = []
+	if (type) {
+		pipeline.push({ $match: { type } })
+	}
+	//Sort by price by default
+	pipeline.push({
+		$sort: {
+			price: -1
+		}
+	})
+	const employees = await Employee.aggregate(pipeline)
+	res.status(200).json(employees)
+	//Pagination with cursor later
 }
-    
 
 module.exports = {
-    updateEmployeeHistory,
-    getEmployees
+	updateEmployeeHistory,
+	getEmployees
 }
