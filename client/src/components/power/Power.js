@@ -102,6 +102,7 @@ function Power(props){
             settings={settings}
                />        
             }
+            <div className="table-container">
             <table>
                 <thead>
                     <tr><th>Název teamu</th>{tableHeader}</tr>
@@ -110,6 +111,7 @@ function Power(props){
                     {powerTable}
                 </tbody>
             </table>
+            </div>
         </div>
     );
 };

@@ -42,6 +42,13 @@ th{
 }
 table th:first-child{
   white-space: nowrap;
+  position: sticky;
+  left: 0;
+}
+td:first-child{
+  position: sticky;
+  left: 0;
+  background-color: inherit;
 }
 tr:nth-child(even){
   background-color: var(--color-table-primary);
@@ -51,6 +58,9 @@ tr:nth-child(odd){
 }
 td{
   padding: 5px;
+}
+.table-container{
+  overflow-x:auto ;
 }
 .button{
   display: inline-block;
