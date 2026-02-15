@@ -6,7 +6,7 @@ function PlayerSFM(props) {
 		ufaDate = player.ufaFrom.split("T")[0]
 	} else {
 		const days = 1000 * 60 * 60 * 24
-		const daysLeft = Math.ceil((new Date(player.ufaTo) - new Date.now()) / days)
+		const daysLeft = Math.ceil((new Date(player.ufaTo) - Date.now()) / days)
 		ufaDate = `On UFA (${daysLeft})`
 	}
 	const interestedIn = player.interestedIn
