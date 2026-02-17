@@ -26,6 +26,25 @@ function Power(props) {
 			showPopup(error.response.data.msg)
 		}
 	}
+	const fetchData = React.useCallback(async () => {
+		try {
+			if (settings.league === "all") {
+				const res = await axios.get(`/api/v1/powers?sort=${settings.sort}`)
+				setHeaders(res.data.headers)
+				setTeamPowers(res.data.teams)
+			} else {
+				const res = await axios.get(
+					`/api/v1/powers?league=${settings.league}&sort=${settings.sort}`
+				)
+				setHeaders(res.data.headers)
+				setTeamPowers(res.data.teams)
+			}
+		} catch (error) {
+			console.log(error)
+			showPopup(error.response.data.msg)
+		}
+	}, [settings, showPopup])
+
 	async function handleSubmit() {
 		try {
 			setIsLoading(true)
@@ -33,6 +52,7 @@ function Power(props) {
 				`/api/v1/powers?socketId=${props.socketId}&header=${settings.header}`
 			)
 			showPopup(res.data.msg)
+			fetchData()
 			setIsLoading(false)
 		} catch (error) {
 			console.log(error)
@@ -58,24 +78,6 @@ function Power(props) {
 		})
 	}
 
-	const fetchData = React.useCallback(async () => {
-		try {
-			if (settings.league === "all") {
-				const res = await axios.get(`/api/v1/powers?sort=${settings.sort}`)
-				setHeaders(res.data.headers)
-				setTeamPowers(res.data.teams)
-			} else {
-				const res = await axios.get(
-					`/api/v1/powers?league=${settings.league}&sort=${settings.sort}`
-				)
-				setHeaders(res.data.headers)
-				setTeamPowers(res.data.teams)
-			}
-		} catch (error) {
-			console.log(error)
-			showPopup(error.response.data.msg)
-		}
-	}, [settings, showPopup])
 	React.useEffect(() => {
 		fetchData()
 	}, [fetchData])

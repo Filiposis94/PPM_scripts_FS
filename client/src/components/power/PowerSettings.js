@@ -22,7 +22,7 @@ function PowerSettings(props) {
 						required
 					></input>
 				</p>
-				<button type="button" className="button">
+				<button type="submit" className="button">
 					Stáhni sílu teamů
 				</button>
 				<select name="league" onChange={props.handleSettings}>
