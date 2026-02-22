@@ -8,9 +8,9 @@ const express = require("express")
 const app = express()
 // Connect DB
 const connectDB = require("./db/connect")
-const path = require("path")
+const path = require("node:path")
 // SOCKET IO
-const http = require("http")
+const http = require("node:http")
 const { Server } = require("socket.io")
 const server = http.createServer(app)
 const io = new Server(server, {
