@@ -50,7 +50,6 @@
 		"js-yaml": "^4.1.1",
 		"webpack": "^5.104.0",
 		"lodash": "^4.17.23",
-		"webpack-dev-server": "^5.2.1",
 		"on-headers": "^1.1.0"
 	}
 }
