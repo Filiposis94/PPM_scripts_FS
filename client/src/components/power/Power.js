@@ -19,7 +19,7 @@ function Power(props) {
 	async function handleUpdateTeams() {
 		try {
 			showPopup("Aktualizuji teamy...")
-			const res = await axios.get("/api/v1/powers/teams")
+			const res = await axios.patch("/api/v1/powers/teams")
 			showPopup(res.data.msg)
 		} catch (error) {
 			console.log(error)

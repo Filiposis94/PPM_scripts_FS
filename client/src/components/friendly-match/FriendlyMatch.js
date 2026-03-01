@@ -36,7 +36,7 @@ function FriendlyMatch(props) {
 	async function handleUpdateTeams() {
 		try {
 			showPopup("Aktualizuji teamy...")
-			const res = await axios.get("/api/v1/friendly-matches/teams")
+			const res = await axios.patch("/api/v1/friendly-matches/teams")
 			showPopup(res.data.msg)
 		} catch (error) {
 			console.log(error)
