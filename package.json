@@ -22,7 +22,7 @@
 		"mongoose": "^8.14.1",
 		"nodemon": "^3.1.0",
 		"puppeteer": "^22.9.0",
-		"socket.io": "^4.7.5",
+		"socket.io": "^4.8.3",
 		"xss-clean": "^0.1.4"
 	},
 	"engines": {
@@ -32,7 +32,8 @@
 		"tar-fs": "^3.1.1",
 		"js-yaml": "^4.1.1",
 		"tmp": "^0.2.4",
-		"basic-ftp": "^5.2.0"
+		"basic-ftp": "^5.2.0",
+		"socket.io-parser": "^4.2.6"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.15"
