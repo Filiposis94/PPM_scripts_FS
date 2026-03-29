@@ -33,7 +33,9 @@
 		"js-yaml": "^4.1.1",
 		"tmp": "^0.2.4",
 		"basic-ftp": "^5.2.0",
-		"socket.io-parser": "^4.2.6"
+		"socket.io-parser": "^4.2.6",
+		"picomatch": "^2.3.2",
+		"brace-expansion": "^1.1.13"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.15"
