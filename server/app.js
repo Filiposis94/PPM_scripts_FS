@@ -1,8 +1,6 @@
-require("express-async-errors")
 require("dotenv").config()
 const helmet = require("helmet")
 const cors = require("cors")
-const xss = require("xss-clean")
 const rateLimiter = require("express-rate-limit")
 const express = require("express")
 const app = express()
@@ -55,7 +53,6 @@ app.use(
 app.use(express.json())
 app.use(helmet())
 app.use(cors())
-app.use(xss())
 app.use(express.static(path.resolve(__dirname, "../client/build")))
 
 // ROUTES
@@ -67,7 +64,7 @@ app.use("/api/v1/visits", visitsRouter)
 app.use("/api/v1/employees", employeesRouter)
 
 // All other GET requests not handled before will return our React app
-app.get("*", (_req, res) => {
+app.get((_req, res) => {
 	res.sendFile(path.resolve(__dirname, "../client/build", "index.html"))
 })
 
