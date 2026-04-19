@@ -12,6 +12,10 @@ const getTactics = async (req, res) => {
 	const startDate = getPPMDate("start", 0)
 	const sockets = req.sockets
 	const socket = sockets.get(socketId)
+	const parsedNumOfDays = Number(numOfDays)
+	if (!Number.isFinite(parsedNumOfDays)) {
+		throw new BadRequestError("NumOfDays must be a number")
+	}
 	const data = await scrapeTactics(startDate, numOfDays, teamId, socket)
 	res.status(200).json(data)
 }

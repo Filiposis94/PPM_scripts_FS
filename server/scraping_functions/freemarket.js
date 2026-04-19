@@ -11,9 +11,9 @@ const scrapeFreeMarket = async (cz, socket, offset) => {
 	// FILLING MARKET INPUTS
 	await page.select("#market_type", "3")
 	// Bid closing based on offset
-	await page.type("input[name=contract_from]", `${8 + Number(offset)}`)
-	await page.type("input[name=contract_to]", `${8 + Number(offset)}`)
-	await page.type("input[name=index_skill_from", cz)
+	await page.type("input[name=contract_from]", `${8 + offset}`)
+	await page.type("input[name=contract_to]", `${8 + offset}`)
+	await page.type("input[name=index_skill_from]", `${cz}`)
 	await page.click(
 		"#filter_market > form > table:nth-child(5) > tbody > tr > td:nth-child(1) > button"
 	)

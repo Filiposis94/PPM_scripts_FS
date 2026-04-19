@@ -36,8 +36,17 @@ const updateEmployeeHistory = async (_req, res) => {
 
 const getEmployees = async (req, res) => {
 	const { type } = req.query
+	const validTypes = [
+		"Trenér",
+		"Fyzioterapeut",
+		"Manažer",
+		"Správce stadionu",
+		"Lektor",
+		"Sportovní ředitel",
+		"Lékař"
+	]
 	const pipeline = []
-	if (type) {
+	if (type && validTypes.includes(type)) {
 		pipeline.push({ $match: { type } })
 	}
 	//Sort by price by default

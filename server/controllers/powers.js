@@ -13,7 +13,9 @@ const getPower = async (req, res) => {
 	const { league, sort } = req.query
 	const pipeline = []
 
-	if (league) {
+	const validLeagues = ["I.1", "II.1", "II.2", "II.3", "II.4"]
+
+	if (league && validLeagues.includes(league)) {
 		pipeline.push({ $match: { league } })
 	} else {
 		pipeline.push({ $match: {} })
