@@ -1,11 +1,14 @@
 const puppeteer = require("puppeteer")
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`
 const getPPMDate = require("../helper_functions/getPPMDate")
+const login = require("./login")
 
 const scrapeNextOpponent = async () => {
 	// INITIALIZATION
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URLcalendar, { waitUntil: "networkidle0" })
 	const today = getPPMDate("start", 0)
 	const tommorow = getPPMDate(today, 1)

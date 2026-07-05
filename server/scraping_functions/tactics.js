@@ -1,12 +1,15 @@
 const puppeteer = require("puppeteer")
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`
 const getPPMDateMinus = require("../helper_functions/getPPMDateMinus")
+const login = require("./login")
 
 const scrapeTactics = async (startDate, numOfDays, teamId, socket) => {
 	// INITIALIZATION
 	socket.emit("task", "Zahajuji proces...")
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URLcalendar, { waitUntil: "networkidle0" })
 	const finalData = []
 	socket.emit("task", "Procházím kalendář...")
@@ -16,7 +19,7 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket) => {
 		const progress = Math.round((i / numOfDays) * 100)
 		socket.emit("progress", progress)
 		const datePPM = getPPMDateMinus(startDate, i)
-		// console.log(datePPM);
+		// console.log(datePPM)
 		await page.goto(`${URLcalendar}?data=${teamId}-${datePPM}`, {
 			waitUntil: "load"
 		})
@@ -74,45 +77,45 @@ const scrapeTactics = async (startDate, numOfDays, teamId, socket) => {
 			if (sOindicator) {
 				if (homeTeamUrl.includes(teamId)) {
 					mainTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[2].childNodes[1].innerText
 					ppTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[3].childNodes[1].innerText
 					pkTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[4].childNodes[1].innerText
 				} else {
 					mainTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[2].childNodes[5].innerText
 					ppTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[3].childNodes[5].innerText
 					pkTactics = document
-						.querySelectorAll(".white_box")[9]
+						.querySelectorAll(".white_box")[11]
 						.querySelectorAll("tr")[4].childNodes[5].innerText
 				}
 			} else {
 				if (homeTeamUrl.includes(teamId)) {
 					mainTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[2].childNodes[1].innerText
 					ppTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[3].childNodes[1].innerText
 					pkTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[4].childNodes[1].innerText
 				} else {
 					mainTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[2].childNodes[5].innerText
 					ppTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[3].childNodes[5].innerText
 					pkTactics = document
-						.querySelectorAll(".white_box")[8]
+						.querySelectorAll(".white_box")[10]
 						.querySelectorAll("tr")[4].childNodes[5].innerText
 				}
 			}

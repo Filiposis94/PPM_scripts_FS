@@ -1,12 +1,15 @@
 const puppeteer = require("puppeteer")
 const URLcalendar = `https://hockey.powerplaymanager.com/cs/kalendar.html`
 const getPPMDate = require("../helper_functions/getPPMDate")
+const login = require("./login")
 
 const scrapeVisits = async (startDate, numOfDays, socket) => {
 	// INITALIZATION
 	socket.emit("task", "Zahajuji proces...")
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URLcalendar, { waitUntil: "networkidle0" })
 	const finalData = []
 	// SCANNING CALENDAR

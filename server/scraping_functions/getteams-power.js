@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer")
 const URL = `https://hockey.powerplaymanager.com/cs/liga.html`
 const fs = require("node:fs")
 const path = require("node:path")
+const login = require("./login")
 
 const scrapeTeamsPower = async () => {
 	const leaguePath = path.join(__dirname, "../files/leagues-power.txt")
@@ -9,6 +10,8 @@ const scrapeTeamsPower = async () => {
 	// INITIALIZATION
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URL, { waitUntil: "networkidle0" })
 	await page.setViewport({ width: 1400, height: 720 })
 	const finalData = []

@@ -5,6 +5,7 @@ const URLstadium = `https://hockey.powerplaymanager.com/cs/stadion.html`
 const URLhistory = `https://hockey.powerplaymanager.com/cs/historie-tymu.html`
 const fs = require("node:fs")
 const path = require("node:path")
+const login = require("./login")
 
 const scrapeEverything = async (dates, tk, socket, moreData) => {
 	socket.emit("task", "Zahajuji proces...")
@@ -14,6 +15,8 @@ const scrapeEverything = async (dates, tk, socket, moreData) => {
 	// INITIALIZATION
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URLteam, { waitUntil: "networkidle0" })
 	const finalData = []
 	socket.emit("task", "Sbírám data...")

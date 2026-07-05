@@ -1,11 +1,14 @@
 const puppeteer = require("puppeteer")
 const URLmarket = `https://hockey.powerplaymanager.com/cs/trh.html`
+const login = require("./login")
 
 const scrapeSoonFreeMarket = async (socket) => {
 	// INITIALIZATION
 	socket.emit("task", "Zahajuji proces...")
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
+	await login(page)
+
 	await page.goto(URLmarket, { waitUntil: "networkidle0" })
 	// 1. GETTING LIST OF PLAYERS AVAILABLE
 
