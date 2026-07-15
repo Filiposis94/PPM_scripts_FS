@@ -12,9 +12,8 @@ import Tactics from "./components/tactics/Tactics"
 import Visits from "./components/visits/Visits"
 import ppmLogo from "./img/ppm-logo.png"
 
-const URL =
-	process.env.NODE_ENV === "production" ? undefined : "http://localhost:4000"
-const socket = io.connect(URL)
+// const URL = import.meta.env.DEV ? "http://localhost:4000" : undefined
+const socket = io.connect()
 
 function App() {
 	const [taskProgress, setTaskProgress] = React.useState(0)
