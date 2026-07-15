@@ -53,7 +53,7 @@ app.use(
 app.use(express.json())
 app.use(helmet())
 app.use(cors())
-app.use(express.static(path.resolve(__dirname, "../client/build")))
+app.use(express.static(path.resolve(__dirname, "../client/dist")))
 
 // ROUTES
 app.use("/api/v1/freemarket", freemarketRouter)
