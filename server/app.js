@@ -65,7 +65,7 @@ app.use("/api/v1/employees", employeesRouter)
 
 // All other GET requests not handled before will return our React app
 app.get((_req, res) => {
-	res.sendFile(path.resolve(__dirname, "../client/build", "index.html"))
+	res.sendFile(path.resolve(__dirname, "../client/dist/index.html"))
 })
 
 // ERROR MIDDLEWARES
